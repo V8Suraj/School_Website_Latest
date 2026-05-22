@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Tiro+Devanagari+Sanskrit&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Indian Hindu Cultural Design System
+   Saffron, Maroon, Gold, Cream, Peacock — all HSL */
+
+@layer base {
+  :root {
+    /* Surfaces — warm parchment */
+    --background: 38 45% 96%;
+    --foreground: 20 40% 12%;
+
+    --card: 36 50% 98%;
+    --card-foreground: 20 40% 12%;
+
+    --popover: 36 50% 98%;
+    --popover-foreground: 20 40% 12%;
+
+    /* Saffron — primary brand */
+    --primary: 22 88% 52%;
+    --primary-foreground: 38 50% 98%;
+    --primary-glow: 32 95% 60%;
+
+    /* Maroon / Tilak red — secondary */
+    --secondary: 358 65% 32%;
+    --secondary-foreground: 38 50% 98%;
+
+    /* Peacock teal */
+    --accent: 184 65% 32%;
+    --accent-foreground: 38 50% 98%;
+
+    /* Gold */
+    --gold: 43 78% 52%;
+    --gold-foreground: 20 40% 12%;
+
+    --muted: 36 30% 90%;
+    --muted-foreground: 20 20% 38%;
+
+    --destructive: 0 75% 45%;
+    --destructive-foreground: 38 50% 98%;
+
+    --border: 32 35% 82%;
+    --input: 32 35% 82%;
+    --ring: 22 88% 52%;
+
+    --radius: 0.875rem;
+
+    /* Gradients */
+    --gradient-saffron: linear-gradient(135deg, hsl(22 88% 52%), hsl(38 95% 58%));
+    --gradient-festive: linear-gradient(135deg, hsl(358 65% 32%) 0%, hsl(22 88% 52%) 50%, hsl(43 88% 55%) 100%);
+    --gradient-temple: linear-gradient(180deg, hsl(38 80% 92%) 0%, hsl(32 70% 86%) 100%);
+    --gradient-peacock: linear-gradient(135deg, hsl(184 65% 32%), hsl(220 55% 28%));
+    --gradient-gold: linear-gradient(135deg, hsl(43 88% 55%), hsl(38 78% 48%));
+    --gradient-hero-overlay: linear-gradient(180deg, hsl(20 40% 12% / 0.15) 0%, hsl(20 40% 12% / 0.55) 100%);
+
+    /* Shadows */
+    --shadow-warm: 0 12px 40px -12px hsl(22 88% 40% / 0.35);
+    --shadow-temple: 0 20px 60px -20px hsl(358 65% 25% / 0.4);
+    --shadow-gold: 0 8px 24px -6px hsl(43 88% 50% / 0.5);
+    --shadow-soft: 0 4px 18px -6px hsl(20 40% 20% / 0.12);
+
+    /* Sidebar (defaults retained for shadcn) */
+    --sidebar-background: 38 45% 96%;
+    --sidebar-foreground: 20 40% 12%;
+    --sidebar-primary: 22 88% 52%;
+    --sidebar-primary-foreground: 38 50% 98%;
+    --sidebar-accent: 36 30% 90%;
+    --sidebar-accent-foreground: 20 40% 12%;
+    --sidebar-border: 32 35% 82%;
+    --sidebar-ring: 22 88% 52%;
+
+    --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    background-image:
+      radial-gradient(circle at 10% 0%, hsl(22 88% 52% / 0.06), transparent 40%),
+      radial-gradient(circle at 90% 100%, hsl(358 65% 32% / 0.05), transparent 40%);
+    /* removed background-attachment: fixed — causes repaint on every scroll tick */
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.01em;
+  }
+  .font-sanskrit {
+    font-family: 'Tiro Devanagari Sanskrit', serif;
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply mx-auto w-full px-6 md:px-10 xl:px-14;
+  }
+  .text-gradient-saffron {
+    background: var(--gradient-saffron);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-festive {
+    background: var(--gradient-festive);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .border-ornate {
+    border-image: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--primary)), hsl(var(--secondary))) 1;
+  }
+  .divider-ornate {
+    @apply relative flex items-center justify-center gap-4 text-primary;
+  }
+  .divider-ornate::before,
+  .divider-ornate::after {
+    content: '';
+    @apply h-px flex-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent;
+  }
+}
+
+@layer utilities {
+  .bg-paper {
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(hsl(20 40% 12% / 0.04) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .glass-panel {
+    background: hsl(36 50% 98% / 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--gold) / 0.3);
+  }
+  .section-surface {
+    background:
+      linear-gradient(125deg, hsl(36 50% 98% / 0.95), hsl(38 45% 94% / 0.92)),
+      radial-gradient(circle at 12% 5%, hsl(43 88% 55% / 0.08), transparent 40%);
+    border: 1px solid hsl(var(--gold) / 0.28);
+    box-shadow: var(--shadow-soft);
+  }
+  .sacred-grid {
+    position: relative;
+    isolation: isolate;
+  }
+  /* removed ::before pseudo-element — multi-layer radial-gradient + mask causes expensive repaints */
+  .ornate-frame {
+    position: relative;
+  }
+  .ornate-frame::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    border-radius: inherit;
+    border: 1px solid hsl(var(--gold) / 0.38);
+    background:
+      linear-gradient(90deg, transparent, hsl(43 88% 55% / 0.35), transparent) border-box;
+    mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+  .facility-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: max-content;
+    animation: facility-marquee 28s linear infinite;
+    will-change: transform;
+  }
+  .facility-marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--gold) / 0.28);
+    background: hsl(36 50% 98% / 0.86);
+    box-shadow: var(--shadow-soft);
+  }
+  .facility-image-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: max-content;
+    animation: facility-marquee 26s linear infinite;
+    will-change: transform;
+  }
+  .facility-image-marquee-item {
+    position: relative;
+    width: 260px;
+    height: 140px;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    border: 1px solid hsl(var(--gold) / 0.35);
+    box-shadow: var(--shadow-soft);
+    flex-shrink: 0;
+  }
+  .facility-image-marquee-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, hsl(20 40% 12% / 0.72), hsl(20 40% 12% / 0.12));
+  }
+  .facility-image-marquee-label {
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: hsl(36 50% 98%);
+    font-size: 0.92rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 7px hsl(20 40% 10% / 0.72);
+  }
+}
+
+@keyframes facility-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite;
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+  
+  .animate-rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-temple);
+  }
+  
+  .focus-glow:focus-within {
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+    border-color: hsl(var(--primary));
+  }
+  
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .facility-marquee-track {
+    animation: none !important;
+    transform: translateX(0) !important;
+  }
+  .facility-image-marquee-track {
+    animation: none !important;
+    transform: translateX(0) !important;
+  }
+}
