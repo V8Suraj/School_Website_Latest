@@ -87,15 +87,18 @@ const AdminAnnouncements = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search announcements…" className="pl-9 border-gold/25 focus:border-primary/50" />
         </div>
-        <div className="flex gap-1.5 flex-wrap">
+        
+        {/* Scrollable Filter on Mobile, wrap on desktop */}
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible sm:flex-wrap">
           {["All", ...CATS].map(c => (
             <button key={c} onClick={() => setFilterCat(c)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${filterCat === c ? "bg-primary text-white border-primary" : "border-gold/30 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap shrink-0 ${filterCat === c ? "bg-primary text-white border-primary" : "border-gold/30 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
               {c}
             </button>
           ))}
         </div>
-        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0">
+        
+        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0 w-full sm:w-auto">
           <Plus className="h-4 w-4" /> New
         </Button>
       </div>
@@ -119,41 +122,82 @@ const AdminAnnouncements = () => {
                 className="bg-card rounded-2xl border border-gold/20 hover:border-gold/40 hover:shadow-warm transition-all duration-200 overflow-hidden"
               >
                 <div className={`h-0.5 w-full ${cfg.dot}`} />
-                <div className="flex items-start gap-4 p-4 sm:p-5">
-                  <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-xl border ${cfg.bg} ${cfg.text} ${cfg.border}`}>
-                    <Megaphone className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`} />{a.category}
-                      </span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <Calendar className="h-3 w-3" /> {a.date}
-                      </span>
+                <div className="p-4 sm:p-5 flex flex-col gap-3">
+                  
+                  {/* Top row: Icon and textual info */}
+                  <div className="flex items-start gap-4">
+                    <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-xl border ${cfg.bg} ${cfg.text} ${cfg.border}`}>
+                      <Megaphone className="h-4 w-4" />
                     </div>
-                    <h3 className="font-display font-semibold text-secondary text-sm sm:text-base leading-snug">{a.title}</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed line-clamp-2">{a.body}</p>
-                    {/* attachment link */}
-                    {a.attachment && (
-                      <a href={a.attachment} target="_blank" rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-primary hover:underline"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <Paperclip className="h-3.5 w-3.5" />
-                        {a.attachmentName || "View Attachment"}
-                        <ExternalLink className="h-3 w-3 opacity-60" />
-                      </a>
-                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}>
+                          <span className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`} />{a.category}
+                        </span>
+                        <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                          <Calendar className="h-3 w-3" /> {a.date}
+                        </span>
+                      </div>
+                      <h3 className="font-display font-semibold text-secondary text-sm sm:text-base leading-snug">{a.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed line-clamp-2">{a.body}</p>
+                      
+                      {/* Desktop only attachment link */}
+                      {a.attachment && (
+                        <div className="hidden sm:block">
+                          <a href={a.attachment} target="_blank" rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-primary hover:underline"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <Paperclip className="h-3.5 w-3.5" />
+                            {a.attachmentName || "View Attachment"}
+                            <ExternalLink className="h-3 w-3 opacity-60" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Desktop only actions */}
+                    <div className="hidden sm:flex items-center gap-1 shrink-0">
+                      <button onClick={() => openEdit(a)} className="p-2 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors" title="Edit">
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button onClick={() => setDeleteId(a.id)} className="p-2 rounded-lg hover:bg-red-50 text-muted-foreground hover:text-red-500 transition-colors" title="Delete">
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button onClick={() => openEdit(a)} className="p-2 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors" title="Edit">
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button onClick={() => setDeleteId(a.id)} className="p-2 rounded-lg hover:bg-red-50 text-muted-foreground hover:text-red-500 transition-colors" title="Delete">
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+
+                  {/* Mobile Footer Section (Divider + PDF link + Edit + Delete) */}
+                  <div className="block sm:hidden border-t border-gold/10 pt-3 mt-1">
+                    <div className="flex items-center justify-between gap-2">
+                      {/* Mobile attachment */}
+                      <div>
+                        {a.attachment ? (
+                          <a href={a.attachment} target="_blank" rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <Paperclip className="h-3.5 w-3.5" />
+                            {a.attachmentName || "View Attachment"}
+                            <ExternalLink className="h-3 w-3 opacity-60" />
+                          </a>
+                        ) : (
+                          <span className="text-[11px] text-muted-foreground opacity-60">No attachment</span>
+                        )}
+                      </div>
+
+                      {/* Mobile Actions */}
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => openEdit(a)} className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 text-xs font-semibold transition-colors" title="Edit">
+                          <Pencil className="h-3.5 w-3.5" /> Edit
+                        </button>
+                        <button onClick={() => setDeleteId(a.id)} className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 text-xs font-semibold transition-colors" title="Delete">
+                          <Trash2 className="h-3.5 w-3.5" /> Delete
+                        </button>
+                      </div>
+                    </div>
                   </div>
+
                 </div>
               </motion.div>
             );
