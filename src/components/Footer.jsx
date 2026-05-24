@@ -221,11 +221,11 @@ export const Footer = () => {
         style={{ backgroundImage: "radial-gradient(ellipse at 70% 40%, #f59e0b 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, #c2410c 0%, transparent 50%)" }}
       />
 
-      {/* Decorative top pattern */}
+      
       <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none" />
 
       <div className="container-narrow relative grid gap-8 py-10 md:grid-cols-12">
-        {/* Brand Section - Expanded */}
+        {/* Brand Section  */}
         <motion.div 
           variants={logoVariants}
           className="md:col-span-5"
@@ -333,7 +333,7 @@ export const Footer = () => {
             ))}
           </motion.div>
 
-          {/* Social Links with Pop Animation */}
+          {/* Social Links */}
           <motion.div className="mt-5">
             <h5 className="text-[10px] font-semibold uppercase tracking-wider text-amber-400/70 mb-2">Follow Us</h5>
             <div className="flex gap-3">
@@ -429,7 +429,7 @@ export const Footer = () => {
           </ul>
         </motion.div>
 
-        {/* Contact info - Expanded */}
+        {/* Contact info  */}
         <motion.div
           variants={itemVariants}
           className="md:col-span-4"
