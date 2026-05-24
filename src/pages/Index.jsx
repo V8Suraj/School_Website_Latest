@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react"; // ADDED for mobile carousel
 import { PageHero } from "@/components/PageHero";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MandalaBg } from "@/components/MandalaBg";
@@ -91,6 +92,46 @@ const AnimatedCounter = ({ end, duration = 1.6, suffix = "", group = false }) =>
 // ─── page ──────────────────────────────────────────────────────────────────────
 const Index = () => {
   const { language, t } = useLanguage();
+
+  // ADDED: Carousel setup for mobile features section
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    align: "start",
+    loop: true,
+    skipSnaps: false,
+  });
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+    
+    emblaApi.on("select", onSelect);
+    onSelect();
+    
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // ADDED: Auto-scroll effect for mobile carousel
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const interval = setInterval(() => {
+      if (!emblaApi.canScrollNext()) {
+        emblaApi.scrollTo(0);
+      } else {
+        emblaApi.scrollNext();
+      }
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+  // END OF ADDED CODE
 
   return (
     <>
@@ -322,6 +363,7 @@ const Index = () => {
       </section>
 
       {/* ── Features ── */}
+      {/* UPDATED: Added mobile carousel with auto-scroll */}
       <section className="container-narrow py-24 relative overflow-hidden">
         <MandalaBg className="absolute -right-64 -top-20 h-[30rem] w-[30rem] opacity-35 hidden lg:block z-0" />
         <div className="relative z-10">
@@ -331,7 +373,9 @@ const Index = () => {
             subtitle={t("home.features.sub")}
           />
         </div>
-        <div className="relative z-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        
+        {/* Desktop: Grid layout - unchanged */}
+        <div className="hidden md:grid relative z-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featureKeys.map((k, i) => {
             const Icon = featureIcons[i];
             return (
@@ -381,6 +425,62 @@ const Index = () => {
             );
           })}
         </div>
+
+        {/* Mobile: Auto-scrolling Carousel - NEW ADDITION */}
+        <div className="md:hidden relative">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {featureKeys.map((k, i) => {
+                const Icon = featureIcons[i];
+                return (
+                  <div
+                    key={i}
+                    className="min-w-[85%] pl-4 first:pl-0 last:pr-4 shrink-0"
+                  >
+                    <div className="group relative h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/90 shadow-soft transition-all duration-300">
+                      <div className="h-2 w-full bg-gradient-festive" />
+                      <div className="relative z-10 flex h-full flex-col p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-saffron text-primary-foreground shadow-gold">
+                            <Icon className="h-7 w-7" />
+                          </div>
+                          <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-primary">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                        <h3 className="mt-5 font-display text-xl text-secondary leading-tight">
+                          {t(k.title)}
+                        </h3>
+                        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                          {t(k.desc)}
+                        </p>
+                        <div className="mt-auto pt-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">
+                          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                          <span>{t("home.features.schoolLife")}</span>
+                          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Dots indicator for mobile carousel */}
+          <div className="flex justify-center gap-2 mt-6">
+            {featureKeys.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  selectedIndex === idx ? "w-6 bg-primary" : "bg-primary/30"
+                }`}
+                onClick={() => emblaApi?.scrollTo(idx)}
+              />
+            ))}
+          </div>
+        </div>
+        {/* END OF UPDATED SECTION */}
       </section>
 
       {/* ── Gallery Marquee ── */}
@@ -619,3 +719,4 @@ const Index = () => {
 };
 
 export default Index;
+
