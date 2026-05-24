@@ -10,8 +10,7 @@ import { toast } from "sonner";
 import heroContact from "@/assets/conatctus.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect, useRef } from "react";
-
-// Animated Counter Component
+ 
 const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -132,8 +131,7 @@ const Contact = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Prepare data for submission
+     
     const submissionData = {
       ...formData,
       submittedAt: new Date().toISOString(),
@@ -142,16 +140,14 @@ const Contact = () => {
     };
     
     console.log("Form submitted:", submissionData);
-    
-    // Simulate API call
+     
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     toast.success(t("contact.toastSuccess"), {
       description: "We'll get back to you within 24 hours.",
       duration: 5000,
     });
-    
-    // Reset form
+     
     setFormData({
       name: '',
       email: '',
@@ -231,7 +227,7 @@ const Contact = () => {
         size="full"
       />
 
-      {/* Stats Section with Animated Counters */}
+      {/* counter numbers */}
       <section className="bg-gradient-to-r from-primary/5 via-gold/5 to-primary/5 py-12 border-y border-gold/20">
         <div className="container-narrow">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -265,7 +261,7 @@ const Contact = () => {
       <section className="container-narrow py-16">
         <div className="grid lg:grid-cols-5 gap-10 items-start">
 
-          {/* Left — Enhanced Form */}
+          {/*   Form */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -555,7 +551,7 @@ const Contact = () => {
               </div>
             </motion.div>
 
-            {/* Contact info with copy functionality */}
+            {/* Contact info  */}
             <div className="rounded-2xl bg-card border border-gold/20 shadow-soft overflow-hidden">
               <div className="h-1 w-full bg-gradient-festive" />
               <div className="divide-y divide-gold/10 max-h-[500px] overflow-y-auto">
