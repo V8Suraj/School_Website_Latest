@@ -412,175 +412,269 @@ const AdminCircular = () => {
       title="Circular & Certificate Builder"
       subtitle="Fill fields on the left — live preview on the right — print as styled PDF"
     >
-      <div className="grid lg:grid-cols-2 gap-6 items-start">
+   <div className="grid lg:grid-cols-[1fr_0.95fr] gap-6 items-stretch max-w-[1600px] mx-auto p-1 min-h-[820px]">
 
-        {/* ── Left: Form ── */}
-        <div className="space-y-5">
-
-          {/* Doc type + Language */}
-          <div className="rounded-2xl border border-gold/20 bg-card p-5 shadow-soft space-y-4">
-            <div>
-              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 block">Document Type</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {(["circular", "notice", "certificate"]).map(type => (
-                  <button key={type} onClick={() => set("docType", type)}
-                    className={`py-2.5 rounded-xl text-sm font-semibold capitalize border transition-all ${
-                      form.docType === type ? "bg-primary text-white border-primary shadow-gold" : "border-gold/25 text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                    }`}>{type}</button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 block flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5" /> Language / भाषा
-              </Label>
-              <div className="grid grid-cols-2 gap-2">
-                {([["en", "English"], ["hi", "हिंदी"]]).map(([val, label]) => (
-                  <button key={val} onClick={() => set("lang", val)}
-                    className={`py-2.5 rounded-xl text-sm font-semibold border transition-all ${
-                      form.lang === val ? "bg-primary text-white border-primary shadow-gold" : "border-gold/25 text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                    }`}>{label}</button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Fields */}
-          <div className="rounded-2xl border border-gold/20 bg-card overflow-hidden shadow-soft">
-            <div className="h-1 w-full bg-gradient-festive" />
-            <div className="p-5 space-y-4">
-              {isCircular ? (
-                <>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "संदर्भ संख्या" : "Ref No."}</Label>
-                      <Input value={form.refNo} onChange={e => set("refNo", e.target.value)} className="mt-1.5 border-gold/25" placeholder="VID/2025-26/001" />
-                    </div>
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "दिनांक" : "Date"}</Label>
-                      <Input value={form.date} onChange={e => set("date", e.target.value)} className="mt-1.5 border-gold/25" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "प्रति" : "To (Recipient)"}</Label>
-                    <Input value={form.to} onChange={e => set("to", e.target.value)} className="mt-1.5 border-gold/25" placeholder={form.lang === "hi" ? "सभी अभिभावक एवं विद्यार्थी" : "All Parents & Students"} />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "विषय" : "Subject"}</Label>
-                    <Input value={form.subject} onChange={e => set("subject", e.target.value)} className="mt-1.5 border-gold/25" placeholder={form.lang === "hi" ? "परिपत्र का विषय" : "e.g. Annual Sports Day"} />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "विषय-वस्तु" : "Body / Content"}</Label>
-                    <Textarea rows={8} value={form.body} onChange={e => set("body", e.target.value)} className="mt-1.5 border-gold/25 resize-none"
-                      placeholder={form.lang === "hi" ? "प्रिय अभिभावकों एवं विद्यार्थियों,\n\nआपको सूचित किया जाता है कि..." : "Dear Parents and Students,\n\nThis is to inform you that..."} />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "जारीकर्ता" : "Issued By"}</Label>
-                      <Input value={form.issuedBy} onChange={e => set("issuedBy", e.target.value)} className="mt-1.5 border-gold/25" />
-                    </div>
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "पदनाम" : "Designation"}</Label>
-                      <Input value={form.designation} onChange={e => set("designation", e.target.value)} className="mt-1.5 border-gold/25" />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "प्रमाण-पत्र प्रकार" : "Certificate Type"}</Label>
-                    <div className="relative mt-1.5">
-                      <select value={form.certType} onChange={e => set("certType", e.target.value)}
-                        className="w-full appearance-none rounded-md border border-gold/25 bg-background px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
-                        <option>Certificate of Achievement</option>
-                        <option>Certificate of Participation</option>
-                        <option>Certificate of Merit</option>
-                        <option>Certificate of Excellence</option>
-                        <option>Appreciation Certificate</option>
-                        <option>Sports Achievement Certificate</option>
-                        <option>Cultural Achievement Certificate</option>
-                        {form.lang === "hi" && <>
-                          <option>उत्कृष्टता प्रमाण-पत्र</option>
-                          <option>सहभागिता प्रमाण-पत्र</option>
-                          <option>खेल उपलब्धि प्रमाण-पत्र</option>
-                          <option>सांस्कृतिक उपलब्धि प्रमाण-पत्र</option>
-                        </>}
-                      </select>
-                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "प्राप्तकर्ता का नाम" : "Recipient Name"}</Label>
-                    <Input value={form.recipientName} onChange={e => set("recipientName", e.target.value)} className="mt-1.5 border-gold/25" placeholder={form.lang === "hi" ? "विद्यार्थी / शिक्षक का नाम" : "Student / Teacher Name"} />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "प्रमाण-पत्र विवरण" : "Certificate Body"}</Label>
-                    <Textarea rows={5} value={form.certBody} onChange={e => set("certBody", e.target.value)} className="mt-1.5 border-gold/25 resize-none"
-                      placeholder={form.lang === "hi" ? "ने शैक्षणिक वर्ष 2025–26 में उत्कृष्ट प्रदर्शन किया है।" : "has successfully demonstrated outstanding performance..."} />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "दिनांक" : "Date"}</Label>
-                    <Input value={form.certDate} onChange={e => set("certDate", e.target.value)} className="mt-1.5 border-gold/25" />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "प्रधानाचार्य का नाम" : "Principal Name"}</Label>
-                      <Input value={form.principalName} onChange={e => set("principalName", e.target.value)} className="mt-1.5 border-gold/25" />
-                    </div>
-                    <div>
-                      <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{form.lang === "hi" ? "अध्यक्ष का नाम" : "Chairman Name"}</Label>
-                      <Input value={form.chairmanName} onChange={e => set("chairmanName", e.target.value)} className="mt-1.5 border-gold/25" />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-3 flex-wrap">
-            <Button onClick={handlePrint} variant="hero" className="flex-1 gap-2">
-              <Printer className="h-4 w-4" /> {form.lang === "hi" ? "प्रिंट / PDF सहेजें" : "Print / Save PDF"}
-            </Button>
-            <Button onClick={handleTranslate} disabled={translating} variant="outline"
-              className="gap-1.5 border-violet-300 text-violet-700 hover:bg-violet-50 flex-1"
-            >
-              {translating
-                ? <><Loader2 className="h-4 w-4 animate-spin" /> Translating…</>
-                : <><Languages className="h-4 w-4" />
-                    {form.lang === "en" ? "Convert to Hindi" : "Convert to English"}
-                  </>
-              }
-            </Button>
-            <Button onClick={() => setForm(defaultForm)} variant="outline" className="gap-2">
-              <RefreshCw className="h-4 w-4" /> Reset
-            </Button>
+  {/* ───────────────── LEFT SIDE: CONTROLS (Exactly Your Layout) ───────────────── */}
+  <div className="flex flex-col justify-between h-full space-y-5">
+    
+    <div className="space-y-5 flex-1">
+      {/* Doc type + Language */}
+      <div className="rounded-2xl border border-gold/20 bg-card p-5 shadow-soft space-y-4">
+        <div>
+          <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 block">
+            Document Type
+          </Label>
+          <div className="grid grid-cols-3 gap-2">
+            {(["circular", "notice", "certificate"]).map(type => (
+              <button
+                key={type}
+                onClick={() => set("docType", type)}
+                className={`py-2.5 rounded-xl text-sm font-semibold capitalize border transition-all ${
+                  form.docType === type
+                    ? "bg-primary text-white border-primary shadow-gold"
+                    : "border-gold/25 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* ── Right: Live Preview ── */}
-        <div className="sticky top-6">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-secondary">Live Preview</span>
-            </div>
-            <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-              {form.lang === "hi" ? "हिंदी" : "English"} · A4
-            </span>
+        <div>
+          <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 block flex items-center gap-1.5">
+            <Globe className="h-3.5 w-3.5" />
+            Language / भाषा
+          </Label>
+          <div className="grid grid-cols-2 gap-2">
+            {([["en", "English"], ["hi", "हिंदी"]]).map(([val, label]) => (
+              <button
+                key={val}
+                onClick={() => set("lang", val)}
+                className={`py-2.5 rounded-xl text-sm font-semibold border transition-all ${
+                  form.lang === val
+                    ? "bg-primary text-white border-primary shadow-gold"
+                    : "border-gold/25 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
-          <motion.div
-            key={form.docType + form.lang}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-2xl overflow-hidden border border-gold/20 shadow-warm"
-          >
-            {isCircular ? <CircularPreview f={form} /> : <CertificatePreview f={form} />}
-          </motion.div>
         </div>
-
       </div>
+
+      {/* Fields Container */}
+      <div className="rounded-2xl border border-gold/20 bg-card overflow-hidden shadow-soft">
+        <div className="h-1 w-full bg-gradient-festive" />
+        <div className="p-5 space-y-4">
+          {isCircular ? (
+            <>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {form.lang === "hi" ? "संदर्भ संख्या" : "Ref No."}
+                  </Label>
+                  <Input
+                    value={form.refNo}
+                    onChange={e => set("refNo", e.target.value)}
+                    className="mt-1.5 border-gold/25"
+                    placeholder="VID/2025-26/001"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {form.lang === "hi" ? "दिनांक" : "Date"}
+                  </Label>
+                  <Input
+                    value={form.date}
+                    onChange={e => set("date", e.target.value)}
+                    className="mt-1.5 border-gold/25"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "प्रति" : "To (Recipient)"}
+                </Label>
+                <Input
+                  value={form.to}
+                  onChange={e => set("to", e.target.value)}
+                  className="mt-1.5 border-gold/25"
+                  placeholder={form.lang === "hi" ? "सभी अभिभावक एवं विद्यार्थी" : "All Parents & Students"}
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "विषय" : "Subject"}
+                </Label>
+                <Input
+                  value={form.subject}
+                  onChange={e => set("subject", e.target.value)}
+                  className="mt-1.5 border-gold/25"
+                  placeholder={form.lang === "hi" ? "परिपत्र का विषय" : "e.g. Annual Sports Day"}
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "विषय-वस्तु" : "Body / Content"}
+                </Label>
+                <Textarea
+                  rows={9}
+                  value={form.body}
+                  onChange={e => set("body", e.target.value)}
+                  className="mt-1.5 border-gold/25 resize-none leading-relaxed"
+                  placeholder={form.lang === "hi" ? "प्रिय अभिभावकों एवं विद्यार्थियों,\n\nआपको सूचित किया जाता है कि..." : "Dear Parents and Students,\n\nThis is to inform you that..."}
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {form.lang === "hi" ? "जारीकर्ता" : "Issued By"}
+                  </Label>
+                  <Input
+                    value={form.issuedBy}
+                    onChange={e => set("issuedBy", e.target.value)}
+                    className="mt-1.5 border-gold/25"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {form.lang === "hi" ? "पदनाम" : "Designation"}
+                  </Label>
+                  <Input
+                    value={form.designation}
+                    onChange={e => set("designation", e.target.value)}
+                    className="mt-1.5 border-gold/25"
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "प्रमाण-पत्र प्रकार" : "Certificate Type"}
+                </Label>
+                <div className="relative mt-1.5">
+                  <select
+                    value={form.certType}
+                    onChange={e => set("certType", e.target.value)}
+                    className="w-full appearance-none rounded-md border border-gold/25 bg-background px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option>Certificate of Achievement</option>
+                    <option>Certificate of Participation</option>
+                    <option>Certificate of Merit</option>
+                    <option>Certificate of Excellence</option>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "प्राप्तकर्ता का नाम" : "Recipient Name"}
+                </Label>
+                <Input
+                  value={form.recipientName}
+                  onChange={e => set("recipientName", e.target.value)}
+                  className="mt-1.5 border-gold/25"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {form.lang === "hi" ? "प्रमाण-पत्र विवरण" : "Certificate Body"}
+                </Label>
+                <Textarea
+                  rows={6}
+                  value={form.certBody}
+                  onChange={e => set("certBody", e.target.value)}
+                  className="mt-1.5 border-gold/25 resize-none leading-relaxed"
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* Buttons Stay Permanently at the Bottom, Aligned with Preview's Bottom */}
+    <div className="flex gap-3 flex-wrap pt-2">
+      <Button
+        onClick={handlePrint}
+        variant="hero"
+        className="flex-1 gap-2 h-11 text-xs uppercase tracking-wider font-bold shadow-sm"
+      >
+        <Printer className="h-4 w-4" />
+        {form.lang === "hi" ? "प्रिंट / PDF सहेजें" : "Print / Save PDF"}
+      </Button>
+
+      <Button
+        onClick={handleTranslate}
+        disabled={translating}
+        variant="outline"
+        className="gap-1.5 border-violet-300 text-violet-700 hover:bg-violet-50 flex-1 h-11 text-xs uppercase tracking-wider font-bold"
+      >
+        {translating ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Translating…
+          </>
+        ) : (
+          <>
+            <Languages className="h-4 w-4" />
+            {form.lang === "en" ? "Convert to Hindi" : "Convert to English"}
+          </>
+        )}
+      </Button>
+
+      <Button
+        onClick={() => setForm(defaultForm)}
+        variant="outline"
+        className="gap-2 h-11 text-xs uppercase tracking-wider font-bold"
+      >
+        <RefreshCw className="h-4 w-4" />
+        Reset
+      </Button>
+    </div>
+  </div>
+
+  {/* ───────────────── RIGHT SIDE: LIVE PREVIEW (Perfectly Mirrored Height) ───────────────── */}
+  <div className="flex flex-col h-full justify-between">
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <FileText className="h-4 w-4 text-primary" />
+          <span className="text-sm font-semibold text-secondary">
+            Live Preview
+          </span>
+        </div>
+        <span className="text-xs text-muted-foreground bg-muted px-2.5 py-0.5 rounded-full font-medium">
+          {form.lang === "hi" ? "हिंदी" : "English"} · A4
+        </span>
+      </div>
+
+      <motion.div
+        key={form.docType + form.lang}
+        initial={{ opacity: 0, scale: 0.99 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+        className="rounded-2xl overflow-hidden border border-gold/20 shadow-warm bg-white w-full"
+      >
+        {isCircular ? <CircularPreview f={form} /> : <CertificatePreview f={form} />}
+      </motion.div>
+    </div>
+    
+    {/* Empty spacer that pushes the preview layout context to sync bottom edge with buttons */}
+    <div className="h-0 block" />
+  </div>
+
+</div>
     </AdminPageShell>
   );
 };
