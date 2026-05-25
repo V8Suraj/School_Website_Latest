@@ -9,6 +9,13 @@ import {
   Pencil, Trash2, X, Plus, Save, Search,
   CalendarDays, MapPin, ArrowRight, Clock,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // ─── config ────────────────────────────────────────────────────────────────────
 const CATEGORIES = ["Exam", "Result", "Holiday", "Meeting", "Event", "Leave"];
@@ -96,7 +103,38 @@ const AdminCalendarEvents = () => {
             className="pl-9 border-gold/25 focus:border-primary/50"
           />
         </div>
-        <div className="flex gap-1.5 flex-wrap">
+
+
+
+
+{/* Mobile Dropdown */}
+
+<div className="md:hidden w-full flex justify-between items-center gap-2">
+  <Select value={filter} onValueChange={setFilter}>
+    <SelectTrigger className="w-1/2">
+      <SelectValue placeholder="Select category" />
+    </SelectTrigger>
+
+    <SelectContent className="w-full">
+      {["All", ...CATEGORIES].map((c) => (
+        <SelectItem key={c} value={c}  className="relative flex  cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+          {c}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+
+    <Button onClick={openAdd} variant="hero" size="sm" className=" gap-1.5 shrink-0">
+          <Plus className="h-4 w-4" /> Add Event
+        </Button>
+
+</div>
+
+
+
+
+{/* Desktop Dropdown */}
+        <div className=" hidden md:flex gap-1.5 flex-wrap">
           {(["All", ...CATEGORIES]).map(c => {
             const cfg = c !== "All" ? CAT_CFG[c] : null;
             return (
@@ -115,7 +153,7 @@ const AdminCalendarEvents = () => {
             );
           })}
         </div>
-        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0">
+        <Button onClick={openAdd} variant="hero" size="sm" className=" hidden md:flex gap-1.5 shrink-0">
           <Plus className="h-4 w-4" /> Add Event
         </Button>
       </div>
@@ -188,7 +226,7 @@ const AdminCalendarEvents = () => {
       </AnimatePresence>
 
       {/* ── Event cards ── */}
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ">
         {visible.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
             <CalendarDays className="h-10 w-10 opacity-25" />
@@ -209,7 +247,7 @@ const AdminCalendarEvents = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ delay: i * 0.04, duration: 0.25 }}
-                className="group bg-card rounded-2xl border border-gold/20 hover:border-gold/40 hover:shadow-warm transition-all duration-200 overflow-hidden"
+                className="group bg-card rounded-2xl border border-gold/20 hover:border-gold/40 hover:shadow-warm transition-all duration-200 overflow-hidden mt-5 md:mt-0"
               >
                 {/* gradient top bar */}
                 <div className={`h-0.5 w-full bg-gradient-to-r ${cfg.gradient}`} />
