@@ -427,45 +427,67 @@ const Index = () => {
         </div>
 
         {/* Mobile: Auto-scrolling Carousel - NEW ADDITION */}
-        <div className="md:hidden relative">
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
-              {featureKeys.map((k, i) => {
-                const Icon = featureIcons[i];
-                return (
-                  <div
-                    key={i}
-                    className="min-w-[85%] pl-4 first:pl-0 last:pr-4 shrink-0"
-                  >
-                    <div className="group relative h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/90 shadow-soft transition-all duration-300">
-                      <div className="h-2 w-full bg-gradient-festive" />
-                      <div className="relative z-10 flex h-full flex-col p-6">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-saffron text-primary-foreground shadow-gold">
-                            <Icon className="h-7 w-7" />
-                          </div>
-                          <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-primary">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                        </div>
-                        <h3 className="mt-5 font-display text-xl text-secondary leading-tight">
-                          {t(k.title)}
-                        </h3>
-                        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                          {t(k.desc)}
-                        </p>
-                        <div className="mt-auto pt-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">
-                          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                          <span>{t("home.features.schoolLife")}</span>
-                          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                        </div>
-                      </div>
-                    </div>
+    <div className="md:hidden relative w-full overflow-hidden">
+  <div className="overflow-hidden w-full" ref={emblaRef}>
+    <div className="flex">
+      {featureKeys.map((k, i) => {
+        const Icon = featureIcons[i];
+
+        return (
+          <div
+            key={i}
+            className="basis-[85%] shrink-0 px-2"
+          >
+            <div className="group relative w-full h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/90 shadow-soft transition-all duration-300">
+              
+              {/* Top Gradient */}
+              <div className="h-2 w-full bg-gradient-festive" />
+
+              {/* Content */}
+              <div className="relative z-10 flex h-full flex-col p-4">
+
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3">
+                  
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-saffron text-primary-foreground shadow-gold">
+                    <Icon className="h-5 w-5" />
                   </div>
-                );
-              })}
+
+                  <span className="shrink-0 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] text-primary">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="mt-5 text-lg leading-snug font-display text-secondary break-words">
+                  {t(k.title)}
+                </h3>
+
+                {/* Description */}
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground break-words whitespace-normal max-w-full overflow-hidden">
+                  {t(k.desc)}
+                </p>
+
+                {/* Footer */}
+                <div className="mt-auto pt-5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary/80">
+                  <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+                  <span className="whitespace-nowrap">
+                    {t("home.features.schoolLife")}
+                  </span>
+
+                  <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                </div>
+
+              </div>
             </div>
           </div>
+        );
+      })}
+    </div>
+  </div>
+
+
 
           {/* Dots indicator for mobile carousel */}
           <div className="flex justify-center gap-2 mt-6">
@@ -507,7 +529,7 @@ const Index = () => {
               {[...galleryItems, ...galleryItems].map((item, i) => (
                 <div
                   key={i}
-                  className="relative w-[420px] h-64 shrink-0 rounded-2xl overflow-hidden border border-gold/20 shadow-soft group cursor-pointer"
+                  className="relative w-[320px] h-54 md:w-[420px] md:h-64 shrink-0 rounded-2xl overflow-hidden border border-gold/20 shadow-soft group cursor-pointer"
                 >
                   <img
                     src={item.src}
@@ -536,7 +558,7 @@ const Index = () => {
               {[...galleryItems.slice().reverse(), ...galleryItems.slice().reverse()].map((item, i) => (
                 <div
                   key={i}
-                  className="relative w-[340px] h-52 shrink-0 rounded-2xl overflow-hidden border border-gold/20 shadow-soft group cursor-pointer"
+                  className="relative w-[240px] h-42 md:w-[340px] md:h-52 shrink-0 rounded-2xl overflow-hidden border border-gold/20 shadow-soft group cursor-pointer"
                 >
                   <img
                     src={item.src}
@@ -601,47 +623,162 @@ const Index = () => {
       {/* ── Testimonials ── */}
       <section className="container-narrow py-24">
         <SectionHeader eyebrow="॥ अनुभवाः ॥" title={t("home.testimonials.title")} subtitle={t("home.testimonials.sub")} />
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonialKeys.map((tk, i) => (
+       <div className="grid md:grid-cols-3 gap-6">
+  {testimonialKeys.map((tk, i) => (
+    <motion.div
+      key={i}
+
+      /* SAME SMOOTH ENTRY ANIMATION */
+      initial={{ opacity: 0, y: 40, rotateX: 8 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+
+      viewport={{ once: true, amount: 0.05 }}
+
+      transition={{
+        delay: i * 0.15,
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+
+      /* SAME HOVER LIFT */
+      whileHover={{
+        y: -8,
+        transition: { duration: 0.25 },
+      }}
+
+      className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/25 bg-card shadow-soft hover:shadow-warm transition-shadow duration-300"
+    >
+      {/* Top Gradient */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{
+          delay: i * 0.15 + 0.2,
+          duration: 0.5,
+        }}
+        className="h-1.5 w-full origin-left bg-gradient-festive"
+      />
+
+      {/* Quote */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{
+          delay: i * 0.15 + 0.25,
+          duration: 0.4,
+        }}
+        className="absolute top-6 right-6 font-display text-[7rem] leading-none text-primary/[0.06] select-none pointer-events-none"
+      >
+        "
+      </motion.div>
+
+      <div className="flex flex-col flex-1 p-7">
+
+        {/* Stars */}
+        <div className="flex gap-1 mb-5">
+          {[...Array(5)].map((_, s) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 40, rotateX: 8 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true, amount: 0.05 }}
-              transition={{ delay: i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -8, transition: { duration: 0.25 } }}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/25 bg-card shadow-soft hover:shadow-warm transition-shadow duration-300"
+              key={s}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.15 + s * 0.06,
+                duration: 0.3,
+              }}
             >
-              <div className="h-1.5 w-full bg-gradient-festive" />
-              <div className="absolute top-6 right-6 font-display text-[7rem] leading-none text-primary/[0.06] select-none pointer-events-none">"</div>
-              <div className="flex flex-col flex-1 p-7">
-                <div className="flex gap-1 mb-5">
-                  {[...Array(5)].map((_, s) => (
-                    <motion.div key={s} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.15 + s * 0.06, duration: 0.3 }}>
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    </motion.div>
-                  ))}
-                </div>
-                <p className="flex-1 text-[0.95rem] leading-relaxed text-foreground/80 italic mb-8">"{t(tk.text)}"</p>
-                <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent mb-5" />
-                <div className="flex items-center gap-4">
-                  <div className="relative shrink-0">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-saffron text-primary-foreground font-display text-lg font-bold shadow-gold ring-2 ring-gold/20">
-                      {(t(tk.name) || "A").charAt(0)}
-                    </div>
-                    <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 ring-2 ring-card">
-                      <svg className="h-2.5 w-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-display font-semibold text-secondary text-sm leading-tight">{t(tk.name) || "Anonymous"}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{t(tk.role) || "Community Member"}</p>
-                  </div>
-                </div>
-              </div>
+              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
             </motion.div>
           ))}
         </div>
+
+        {/* Review Text */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            delay: i * 0.15 + 0.3,
+            duration: 0.45,
+          }}
+          className="flex-1 text-[0.95rem] leading-relaxed text-foreground/80 italic mb-8"
+        >
+          "{t(tk.text)}"
+        </motion.p>
+
+        {/* Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            delay: i * 0.15 + 0.35,
+            duration: 0.45,
+          }}
+          className="h-px w-full origin-left bg-gradient-to-r from-transparent via-gold/30 to-transparent mb-5"
+        />
+
+        {/* Footer */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            delay: i * 0.15 + 0.4,
+            duration: 0.45,
+          }}
+          className="flex items-center gap-4"
+        >
+          <div className="relative shrink-0">
+
+            {/* Avatar */}
+            <motion.div
+              whileHover={{ scale: 1.08 }}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-saffron text-primary-foreground font-display text-lg font-bold shadow-gold ring-2 ring-gold/20"
+            >
+              {(t(tk.name) || "A").charAt(0)}
+            </motion.div>
+
+            {/* Verified Badge */}
+            <motion.span
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{
+                repeat: Infinity,
+                duration: 2,
+              }}
+              className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 ring-2 ring-card"
+            >
+              <svg
+                className="h-2.5 w-2.5 text-white"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </motion.span>
+          </div>
+
+          {/* User Info */}
+          <div>
+            <p className="font-display font-semibold text-secondary text-sm leading-tight">
+              {t(tk.name) || "Anonymous"}
+            </p>
+
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {t(tk.role) || "Community Member"}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  ))}
+</div>
       </section>
 
       {/* ── CTA ── */}
@@ -651,7 +788,7 @@ const Index = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-festive p-10 md:p-16 text-secondary shadow-temple ornate-frame"
+          className="relative overflow-hidden rounded-3xl bg-gradient-festive p-5 md:p-16 text-secondary shadow-temple ornate-frame"
         >
           <MandalaBg className="absolute -right-20 -top-20 w-80 h-80 opacity-40" />
           <MandalaBg className="absolute -left-16 bottom-0 w-64 h-64 opacity-20" spin={false} />
@@ -662,9 +799,9 @@ const Index = () => {
             <motion.div
               animate={{ scale: [1, 1.08, 1], rotate: [0, 3, -3, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/30 border border-white/40 shadow-warm backdrop-blur-sm"
+              className="mb-3 md:mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/30 border border-white/40 shadow-warm backdrop-blur-sm"
             >
-              <Award className="h-7 w-7 text-secondary" />
+              <Award className="h-5 w-5 text-secondary" />
             </motion.div>
             <motion.span
               initial={{ opacity: 0, scale: 0.8 }}
@@ -680,7 +817,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="font-display text-3xl md:text-5xl font-bold mb-4 text-secondary"
+              className="font-display text-2xl md:text-5xl font-bold mb-3 text-secondary"
             >
               {t("home.cta.title")}
             </motion.h3>
@@ -689,7 +826,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="text-lg text-secondary/80 mb-8 max-w-xl leading-relaxed"
+              className="text-md text-secondary/90  mb-6 md:mb-8 max-w-xl leading-relaxed"
             >
               {t("home.cta.sub")}
             </motion.p>
@@ -700,12 +837,12 @@ const Index = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-wrap justify-center gap-4"
             >
-              <Button asChild size="xl"
+              <Button asChild size="lg"
                 className="bg-secondary text-primary-foreground hover:bg-secondary/90 shadow-[0_4px_20px_hsl(22_88%_30%/0.35)] hover:shadow-[0_6px_28px_hsl(22_88%_30%/0.45)] transition-all duration-300 font-semibold hover:scale-105"
               >
                 <Link to="/admissions">{t("home.cta.apply")}</Link>
               </Button>
-              <Button asChild size="xl"
+              <Button asChild size="lg"
                 className="border-2 border-secondary/40 bg-white/25 text-secondary hover:bg-white/40 backdrop-blur-sm font-semibold transition-all duration-300 hover:scale-105"
               >
                 <Link to="/contact">{t("home.cta.contact")}</Link>
