@@ -819,6 +819,7 @@ const Index = () => {
               className="font-display text-2xl md:text-5xl font-bold  mb-3 md:mb-4 text-secondary"
             >
               {t("home.cta.title")}
+              
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
