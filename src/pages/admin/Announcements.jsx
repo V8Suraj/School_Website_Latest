@@ -7,33 +7,40 @@ import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { Pencil, Trash2, X, Megaphone, Save, Plus, Search, Calendar, Paperclip, ExternalLink, Upload, Languages, Loader2 } from "lucide-react";
 import { translateFields } from "@/lib/translate";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CATS = ["General", "Exam", "Event", "Holiday", "Urgent"];
 
 const CAT_CFG = {
-  General: { bg: "bg-slate-100",  text: "text-slate-700",  border: "border-slate-200",  dot: "bg-slate-400" },
-  Exam:    { bg: "bg-blue-100",   text: "text-blue-700",   border: "border-blue-200",   dot: "bg-blue-500" },
-  Event:   { bg: "bg-purple-100", text: "text-purple-700", border: "border-purple-200", dot: "bg-purple-500" },
-  Holiday: { bg: "bg-green-100",  text: "text-green-700",  border: "border-green-200",  dot: "bg-green-500" },
-  Urgent:  { bg: "bg-red-100",    text: "text-red-700",    border: "border-red-200",    dot: "bg-red-500" },
+  General: { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-200", dot: "bg-slate-400" },
+  Exam: { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-200", dot: "bg-blue-500" },
+  Event: { bg: "bg-purple-100", text: "text-purple-700", border: "border-purple-200", dot: "bg-purple-500" },
+  Holiday: { bg: "bg-green-100", text: "text-green-700", border: "border-green-200", dot: "bg-green-500" },
+  Urgent: { bg: "bg-red-100", text: "text-red-700", border: "border-red-200", dot: "bg-red-500" },
 };
 
 const seed = [
-  { id: 1, title: "Annual Sports Day",        body: "Annual Sports Day will be held on 15th Feb 2026. All students must report in sports uniform by 7:30 AM.",  date: "2026-01-10", category: "Event" },
-  { id: 2, title: "Exam Schedule Released",   body: "Term 2 exam schedule is now available. Download the timetable from the Academics section.",                date: "2026-01-08", category: "Exam",    attachment: "https://example.com/exam-schedule.pdf", attachmentName: "Exam Schedule.pdf" },
-  { id: 3, title: "Republic Day Celebration", body: "School will celebrate Republic Day with flag hoisting and cultural programme on 26th Jan.",                 date: "2026-01-05", category: "Holiday" },
-  { id: 4, title: "Admissions Open 2026–27",  body: "Applications for the new academic year are now open. Last date: 31st January 2026.",                       date: "2026-01-01", category: "General" },
+  { id: 1, title: "Annual Sports Day", body: "Annual Sports Day will be held on 15th Feb 2026. All students must report in sports uniform by 7:30 AM.", date: "2026-01-10", category: "Event" },
+  { id: 2, title: "Exam Schedule Released", body: "Term 2 exam schedule is now available. Download the timetable from the Academics section.", date: "2026-01-08", category: "Exam", attachment: "https://example.com/exam-schedule.pdf", attachmentName: "Exam Schedule.pdf" },
+  { id: 3, title: "Republic Day Celebration", body: "School will celebrate Republic Day with flag hoisting and cultural programme on 26th Jan.", date: "2026-01-05", category: "Holiday" },
+  { id: 4, title: "Admissions Open 2026–27", body: "Applications for the new academic year are now open. Last date: 31st January 2026.", date: "2026-01-01", category: "General" },
 ];
 
 const emptyForm = { title: "", body: "", titleHi: "", bodyHi: "", date: "", category: "General", attachment: "", attachmentName: "" };
 
 const AdminAnnouncements = () => {
-  const [items, setItems]         = useState(seed);
-  const [modal, setModal]         = useState(null);
-  const [editing, setEditing]     = useState(null);
-  const [form, setForm]           = useState(emptyForm);
-  const [deleteId, setDeleteId]   = useState(null);
-  const [search, setSearch]       = useState("");
+  const [items, setItems] = useState(seed);
+  const [modal, setModal] = useState(null);
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState(emptyForm);
+  const [deleteId, setDeleteId] = useState(null);
+  const [search, setSearch] = useState("");
   const [filterCat, setFilterCat] = useState("All");
   const [translating, setTranslating] = useState(false);
   const fileRef = useRef(null);
@@ -66,12 +73,12 @@ const AdminAnnouncements = () => {
     if (!form.title.trim()) return;
     const entry = { title: form.title, body: form.body, titleHi: form.titleHi || undefined, bodyHi: form.bodyHi || undefined, date: form.date, category: form.category, attachment: form.attachment || undefined, attachmentName: form.attachmentName || undefined };
     if (editing) setItems(prev => prev.map(i => i.id === editing.id ? { ...editing, ...entry } : i));
-    else         setItems(prev => [{ id: Date.now(), ...entry }, ...prev]);
+    else setItems(prev => [{ id: Date.now(), ...entry }, ...prev]);
     closeModal();
   };
 
   const visible = items.filter(a => {
-    const matchCat    = filterCat === "All" || a.category === filterCat;
+    const matchCat = filterCat === "All" || a.category === filterCat;
     const matchSearch = !search || a.title.toLowerCase().includes(search.toLowerCase()) || a.body.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
@@ -82,23 +89,49 @@ const AdminAnnouncements = () => {
     <AdminPageShell title="Announcements" subtitle={`${items.length} total · Manage school announcements`}>
 
       {/* ── Toolbar ── */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
+        {/* Search Input */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search announcements…" className="pl-9 border-gold/25 focus:border-primary/50" />
+          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search announcements…" className="pl-9 border-gold/25 focus:border-primary/50 w-full" />
         </div>
-        
-        {/* Scrollable Filter on Mobile, wrap on desktop */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible sm:flex-wrap">
-          {["All", ...CATS].map(c => (
-            <button key={c} onClick={() => setFilterCat(c)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap shrink-0 ${filterCat === c ? "bg-primary text-white border-primary" : "border-gold/30 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
-              {c}
-            </button>
-          ))}
+
+        {/* Mobile Dropdown & Add Button */}
+        <div className="md:hidden w-full flex justify-between items-center gap-2">
+          <Select value={filterCat} onValueChange={setFilterCat}>
+            <SelectTrigger className="w-1/2 border-gold/25 focus:ring-primary/20 focus:border-primary/50 bg-background text-sm">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="w-full">
+              {["All", ...CATS].map((c) => (
+                <SelectItem key={c} value={c} className="relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0">
+            <Plus className="h-4 w-4" /> New
+          </Button>
         </div>
-        
-        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0 w-full sm:w-auto">
+
+        {/* Desktop Filter Pills */}
+        <div className="hidden md:flex gap-1.5 flex-wrap">
+          {["All", ...CATS].map(c => {
+            const cfg = c !== "All" ? CAT_CFG[c] : null;
+            return (
+              <button key={c} onClick={() => setFilterCat(c)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap ${filterCat === c ? "bg-primary text-white border-primary" : "border-gold/30 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
+                {cfg && <span className={`inline-block h-1.5 w-1.5 rounded-full ${cfg.dot} mr-1.5`} />}
+                {c}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Desktop Add Button */}
+        <Button onClick={openAdd} variant="hero" size="sm" className="hidden md:flex gap-1.5 shrink-0">
           <Plus className="h-4 w-4" /> New
         </Button>
       </div>
@@ -123,7 +156,7 @@ const AdminAnnouncements = () => {
               >
                 <div className={`h-0.5 w-full ${cfg.dot}`} />
                 <div className="p-4 sm:p-5 flex flex-col gap-3">
-                  
+
                   {/* Top row: Icon and textual info */}
                   <div className="flex items-start gap-4">
                     <div className={`shrink-0 flex h-10 w-10 items-center justify-center rounded-xl border ${cfg.bg} ${cfg.text} ${cfg.border}`}>
@@ -140,7 +173,7 @@ const AdminAnnouncements = () => {
                       </div>
                       <h3 className="font-display font-semibold text-secondary text-sm sm:text-base leading-snug">{a.title}</h3>
                       <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed line-clamp-2">{a.body}</p>
-                      
+
                       {/* Desktop only attachment link */}
                       {a.attachment && (
                         <div className="hidden sm:block">
@@ -155,7 +188,7 @@ const AdminAnnouncements = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Desktop only actions */}
                     <div className="hidden sm:flex items-center gap-1 shrink-0">
                       <button onClick={() => openEdit(a)} className="p-2 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors" title="Edit">
