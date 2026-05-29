@@ -299,6 +299,7 @@ export const notices = [
     body: "Term 2 examinations will commence from 10th February 2026. All students must carry their hall tickets.",
     category: "School Notice",
     date: "2026-01-12",
+    attachment: "/pdfs/term2.pdf",
   },
   {
     id: 2,
@@ -306,6 +307,7 @@ export const notices = [
     body: "All schools must comply with RTE norms for the academic year 2025–26 as per the government directive.",
     category: "Government Notice",
     date: "2026-01-09",
+    attachment: "/pdfs/term2.pdf",
   },
   {
     id: 3,
@@ -313,6 +315,7 @@ export const notices = [
     body: "School will remain closed on 15th January 2026 due to local civic body elections.",
     category: "Urgent Notice",
     date: "2026-01-08",
+    attachment: "/pdfs/term2.pdf",
   },
 ];
 

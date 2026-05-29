@@ -14,6 +14,7 @@ import heroHome from "@/assets/hero-home.jpg";
 import schoolHome from "@/assets/schoolhome.png";
 import { loadAboutFacilities, loadAboutContent, loadAboutFaculty, defaultAboutContent, defaultFaculty } from "@/lib/aboutContent";
 import { useLanguage } from "@/contexts/LanguageContext";
+import useEmblaCarousel from "embla-carousel-react"; //added for mobile carousel
 
 const getInitials = (name) =>
   name.split(" ").filter(Boolean).slice(0, 2).map(p => p[0]?.toUpperCase() ?? "").join("");
@@ -81,6 +82,48 @@ const About = () => {
     setContent(loadAboutContent());
     setFaculty(loadAboutFaculty());
   }, []);
+
+// code for mobile carousel using embla
+
+const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    align: "start",
+    loop: true,
+    skipSnaps: false,
+  });
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+    
+    emblaApi.on("select", onSelect);
+    onSelect();
+    
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // ADDED: Auto-scroll effect for mobile carousel
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const interval = setInterval(() => {
+      if (!emblaApi.canScrollNext()) {
+        emblaApi.scrollTo(0);
+      } else {
+        emblaApi.scrollNext();
+      }
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+
+
 
   return (
     <>
@@ -207,7 +250,7 @@ const About = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.05 }}
-          className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4 relative z-10"
+          className="md:grid gap-6 sm:grid-cols-2 xl:grid-cols-4 relative z-10 hidden "
         >
           {achievements.map((a, i) => (
             <motion.div
@@ -250,6 +293,100 @@ const About = () => {
             </motion.div>
           ))}
         </motion.div>
+
+          {/* MOBILE CAROUSEL */}
+<div className="md:hidden relative w-full overflow-hidden mt-10">
+  <div className="overflow-hidden w-full" ref={emblaRef}>
+    <div className="flex">
+      {achievements.map((a, i) => (
+        <div
+          key={a.title}
+          className="basis-[85%] shrink-0 px-2"
+        >
+          <motion.div
+            whileHover={{
+              y: -6,
+              scale: 1.01,
+              transition: { duration: 0.2 },
+            }}
+            className="group relative w-full h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/85 shadow-soft transition-all duration-300"
+          >
+            {/* Top Gradient */}
+            <div className="h-2 w-full bg-gradient-festive" />
+
+            {/* Watermark Number */}
+            <div className="absolute top-4 right-4 font-display text-[4rem] font-bold leading-none text-primary/[0.05] select-none pointer-events-none">
+              {String(i + 1).padStart(2, "0")}
+            </div>
+
+            {/* Content */}
+            <div className="relative z-10 flex h-full flex-col p-4">
+
+              {/* Header */}
+              <div className="flex items-start justify-between gap-3">
+
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{
+                    duration: 4 + i * 0.6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.5,
+                  }}
+                  whileHover={{ rotate: -12, scale: 1.15 }}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-festive text-primary-foreground shadow-md"
+                >
+                  <a.icon className="h-6 w-6" />
+                </motion.div>
+
+                <span className="shrink-0 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] text-primary">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h4 className="mt-5 font-display text-lg leading-snug text-secondary break-words text-left">
+                {a.title}
+              </h4>
+
+              {/* Description */}
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground break-words whitespace-normal max-w-full overflow-hidden text-left">
+                {a.desc}
+              </p>
+
+              {/* Footer */}
+              <div className="mt-auto flex items-center gap-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary/80">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+                <span className="whitespace-nowrap">
+                  Recognition
+                </span>
+
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+              </div>
+
+            </div>
+          </motion.div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+   {/* Dots indicator for mobile carousel */}
+          <div className="flex justify-center gap-2 mt-6">
+            {achievements.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  selectedIndex === idx ? "w-6 bg-primary" : "bg-primary/30"
+                }`}
+                onClick={() => emblaApi?.scrollTo(idx)}
+              />
+            ))}
+          </div>
+        
+</div>
+
         <MandalaBg className="absolute right-0 bottom-0 w-96 h-96 opacity-5 pointer-events-none" />
       </section>
 
@@ -268,7 +405,7 @@ const About = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.05 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+            className=" hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5"
           >
             {translatedFacilities.map((facility, i) => (
               <motion.div
@@ -307,6 +444,72 @@ const About = () => {
               </motion.div>
             ))}
           </motion.div>
+
+{/* MOBILE FEATURES MOVING CARDS */}
+<div className="md:hidden flex flex-col gap-4 overflow-hidden">
+  <div
+    className="relative flex overflow-hidden"
+    style={{
+      maskImage:
+        "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+    }}
+  >
+    <div
+      className="flex gap-4 animate-[gallery-scroll_40s_linear_infinite]"
+      style={{ width: "max-content" }}
+    >
+      {[...translatedFacilities, ...translatedFacilities].map(
+        (facility, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            className="group relative w-[280px] shrink-0 overflow-hidden rounded-2xl bg-card border border-gold/25 shadow-soft hover:shadow-warm transition-shadow duration-300"
+          >
+            {/* image top */}
+            <div className="relative h-36 overflow-hidden">
+              <img
+                src={facility.image}
+                alt={facility.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+              <div className="absolute bottom-3 left-4">
+                <span className="text-xs font-bold text-white/90 font-display tracking-wider bg-black/30 px-2 py-0.5 rounded">
+                  {String((i % translatedFacilities.length) + 1).padStart(
+                    2,
+                    "0"
+                  )}
+                </span>
+              </div>
+            </div>
+
+            {/* content */}
+            <div className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-saffron text-white shadow-md group-hover:shadow-gold group-hover:scale-110 transition-all duration-300">
+                  <CheckCircle2 className="h-5 w-5" />
+                </div>
+
+                <h3 className="font-display text-lg font-semibold text-secondary leading-tight tracking-tight pt-0.5 break-words">
+                  {facility.title}
+                </h3>
+              </div>
+
+              <p className="text-sm text-muted-foreground leading-relaxed break-words">
+                {facility.desc}
+              </p>
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-festive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+          </motion.div>
+        )
+      )}
+    </div>
+  </div>
+</div>
+
         </div>
       </section>
 
