@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useIsMobile from "@/hooks/use-mobile";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -139,11 +140,11 @@ const Footer = ({ lang }) => {
   );
 };
 
-const CircularPreview = ({ f }) => {
+const CircularPreview = ({ f, mobile }) => {
   const t = L[f.lang];
   const isNotice = f.docType === "notice";
   return (
-    <div style={s.page}>
+    <div style={{ ...s.page, minHeight: mobile ? "auto" : "900px" }}>
       <div style={s.outerBorder} />
       <div style={s.innerBorder} />
       <div style={s.watermark}><span style={s.watermarkText}>विद्यालय</span></div>
@@ -177,10 +178,10 @@ const CircularPreview = ({ f }) => {
   );
 };
 
-const CertificatePreview = ({ f }) => {
+const CertificatePreview = ({ f, mobile }) => {
   const t = L[f.lang];
   return (
-    <div style={s.certPage}>
+    <div style={{ ...s.certPage, minHeight: mobile ? "auto" : "900px" }}>
       <div style={s.certBorder1} />
       <div style={s.certBorder2} />
       <div style={s.certBorder3} />
@@ -370,6 +371,7 @@ const buildPrintHTML = (f) => {
 const AdminCircular = () => {
   const [form, setForm] = useState(defaultForm);
   const [translating, setTranslating] = useState(false);
+  const isMobile = useIsMobile();
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
   const isCircular = form.docType !== "certificate";
 
@@ -412,7 +414,7 @@ const AdminCircular = () => {
       title="Circular & Certificate Builder"
       subtitle="Fill fields on the left — live preview on the right — print as styled PDF"
     >
-   <div className="grid lg:grid-cols-[1fr_0.95fr] gap-6 items-stretch max-w-[1600px] mx-auto p-1 min-h-[820px]">
+   <div className="grid lg:grid-cols-[1.08fr_1fr] gap-3 items-stretch max-w-[1800px] mx-auto p-1 min-h-[820px]">
 
   {/* ───────────────── LEFT SIDE: CONTROLS (Exactly Your Layout) ───────────────── */}
   <div className="flex flex-col justify-between h-full space-y-5">
@@ -604,11 +606,11 @@ const AdminCircular = () => {
     </div>
 
     {/* Buttons Stay Permanently at the Bottom, Aligned with Preview's Bottom */}
-    <div className="flex gap-3 flex-wrap pt-2">
+    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
       <Button
         onClick={handlePrint}
         variant="hero"
-        className="flex-1 gap-2 h-11 text-xs uppercase tracking-wider font-bold shadow-sm"
+        className="flex-1 min-w-[120px] max-w-[260px] basis-[31%] gap-2 h-11 text-xs uppercase tracking-wider font-bold shadow-sm whitespace-nowrap"
       >
         <Printer className="h-4 w-4" />
         {form.lang === "hi" ? "प्रिंट / PDF सहेजें" : "Print / Save PDF"}
@@ -618,7 +620,7 @@ const AdminCircular = () => {
         onClick={handleTranslate}
         disabled={translating}
         variant="outline"
-        className="gap-1.5 border-violet-300 text-violet-700 hover:bg-violet-50 flex-1 h-11 text-xs uppercase tracking-wider font-bold"
+        className="flex-1 min-w-[120px] max-w-[260px] basis-[31%] gap-1.5 border-violet-300 text-violet-700 hover:bg-violet-50 h-11 text-xs uppercase tracking-wider font-bold whitespace-nowrap"
       >
         {translating ? (
           <>
@@ -636,7 +638,7 @@ const AdminCircular = () => {
       <Button
         onClick={() => setForm(defaultForm)}
         variant="outline"
-        className="gap-2 h-11 text-xs uppercase tracking-wider font-bold"
+        className="flex-1 min-w-[120px] max-w-[260px] basis-[31%] gap-2 h-11 text-xs uppercase tracking-wider font-bold whitespace-nowrap"
       >
         <RefreshCw className="h-4 w-4" />
         Reset
@@ -664,9 +666,15 @@ const AdminCircular = () => {
         initial={{ opacity: 0, scale: 0.99 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2 }}
-        className="rounded-2xl overflow-hidden border border-gold/20 shadow-warm bg-white w-full"
+        className="rounded-2xl overflow-hidden border border-gold/20 shadow-warm bg-white w-full md:scale-100 scale-[0.82] origin-top"
       >
-        {isCircular ? <CircularPreview f={form} /> : <CertificatePreview f={form} />}
+       {isCircular ? (
+  <CircularPreview f={form} mobile={isMobile} />
+) : (
+  <div className="md:scale-100 scale-[0.82] origin-top">
+    <CertificatePreview f={form} mobile={isMobile} />
+  </div>
+)}
       </motion.div>
     </div>
     
