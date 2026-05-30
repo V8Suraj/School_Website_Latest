@@ -312,7 +312,7 @@ export const Navbar = () => {
               <img
                 src={schoolLogo}
                 alt="School Logo"
-                className="h-16 w-16 rounded-full object-cover"
+                className="h-16 w-16 rounded-full object-cover h-16 w-16 rounded-full object-cover shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
               />
             </div>
           </button>
