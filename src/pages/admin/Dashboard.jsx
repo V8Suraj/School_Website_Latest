@@ -188,17 +188,21 @@ const AdminDashboard = () => (
           </div>
           <span className="font-display font-semibold text-secondary text-sm">Quick Actions</span>
         </div>
-        <div className="p-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2.5">
+
+
+
+        <div className="p-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 place-items-center">
           {quickActions.map(({ label, to, icon: Icon, gradient }, i) => (
             <motion.div
               key={label}
+              className="w-full"
               initial={{ opacity: 0, scale: 0.93 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 + i * 0.04 }}
             >
               <Link
                 to={to}
-                className="group flex flex-col items-center gap-3 p-5 rounded-2xl border border-gold/15 
+                className="group flex flex-col items-center gap-3 p-6 rounded-2xl border border-gold/15 
                 bg-background/60 hover:bg-primary/5 hover:border-primary/25  
                  hover:-translate-y-0.5 transition-all duration-200 text-center"
               >

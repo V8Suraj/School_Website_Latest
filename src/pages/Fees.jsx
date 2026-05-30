@@ -39,7 +39,7 @@ const Fees = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.05 }}
-          className="bg-card rounded-3xl border border-gold/20 overflow-hidden shadow-warm"
+          className="hidden md:block bg-card rounded-3xl border border-gold/20 overflow-hidden shadow-warm"
         >
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -61,13 +61,30 @@ const Fees = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.05 }}
                     transition={{ delay: i * 0.06 }}
-                    className="hover:bg-primary/5 transition-colors group"
+
+
+                    className={`transition-colors group ${
+  i % 2 === 0 ? "bg-white" : "bg-orange-50"
+}`}
+
+
                   >
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 text-primary font-display font-bold text-sm group-hover:scale-110 transition-transform">
-                          {i + 1}
-                        </div>
+
+
+                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 text-primary font-display font-bold text-sm group-hover:scale-110 transition-transform">
+  <span className="hidden md:block">
+    {i + 1}
+  </span>
+
+  <span className="block md:hidden">
+    {["I", "II", "III", "IV", "V"][i]}
+  </span>
+</div>
+
+
+
                         <span className="font-display font-semibold text-secondary text-base">{fee.className}</span>
                       </div>
                     </td>
@@ -93,8 +110,70 @@ const Fees = () => {
           </div>
         </motion.div>
 
+
+
+
+
+        {/* Mobile Fees Cards */}
+<div className=" md:hidden space-y-4 p-4">
+  {feeRecords.map((fee, i) => (
+    <div
+      key={fee.id}
+      className={`rounded-2xl p-5 shadow-md border ${
+        i % 2 === 0
+          ? "bg-orange-50 border-orange-200"
+          : "bg-amber-50 border-amber-200"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+            {["I", "II", "III", "IV", "V"][i]}
+          </div>
+
+          <h3 className="font-bold text-lg text-secondary">
+            {fee.className}
+          </h3>
+        </div>
+
+        <span className="text-primary font-bold text-lg">
+          {fee.total}
+        </span>
+      </div>
+
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span>Tuition Fee</span>
+          <span className="font-semibold">{fee.tuition}</span>
+        </div>
+
+        <div className="flex justify-between">
+          <span>Admission Fee</span>
+          <span className="font-semibold">{fee.admission}</span>
+        </div>
+
+        <div className="flex justify-between">
+          <span>Exam Fee</span>
+          <span className="font-semibold">{fee.exam}</span>
+        </div>
+
+        <div className="flex justify-between">
+          <span>Other Charges</span>
+          <span className="font-semibold">{fee.other}</span>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
+
+
+
+
         {/* Note */}
-        <div className="mt-5 flex items-start gap-3 text-sm text-foreground/70 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+        <div className="mt-5 flex items-start gap-3 text-sm text-foreground/70 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 w-150">
           <Info className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
           <p className="leading-relaxed">{t("fees.note")}</p>
         </div>
