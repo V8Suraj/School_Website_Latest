@@ -3,6 +3,7 @@ import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageSquare, Reply, Trash2, User, AtSign, Calendar, Search, Languages, Loader2, BookOpen } from "lucide-react";
 import { translateToHindi, translateFields } from "@/lib/translate";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
 
 
 
@@ -112,7 +113,7 @@ const AdminInquiries = () => {
         </div>
 
         {/* Subject filter pills */}
-        <div className="flex gap-1.5 flex-wrap">
+        <div className="hidden md:flex gap-1.5 flex-wrap">
           {SUBJECT_FILTERS.map(s => (
             <button key={s} onClick={() => setFilterSubject(s)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
@@ -125,6 +126,25 @@ const AdminInquiries = () => {
             </button>
           ))}
         </div>
+
+ {/* mobile dropdown filter */}
+    <div className="md:hidden w-full flex justify-between items-center gap-2">
+  <Select value={filterSubject} onValueChange={setFilterSubject}>
+    <SelectTrigger className="w-full">
+      <SelectValue placeholder="Select subject" />
+    </SelectTrigger>
+
+    <SelectContent className="w-full">
+      {[ ...SUBJECT_FILTERS].map((s) => (
+        <SelectItem key={s} value={s}  className="relative flex  cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+          {s}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+
+</div>
+
       </div>
 
       {/* Inbox */}

@@ -24,6 +24,10 @@ import heroContact from "@/assets/conatctus.png";
 import heroHero from "@/assets/hero-home.jpg";
 import schoolHome from "@/assets/schoolhome.png";
 import { announcements, calendarEvents } from "@/data/schoolData";
+import Art from "@/assets/Art.png";
+import Science from "@/assets/Science-lab.png";
+import Sports from "@/assets/Sport.png";
+import Support from "@/assets/Support.png";
 
 // ─── static data (icons/colors are language-independent) ──────────────────────
 const featureIcons = [BookOpen, FlaskConical, Palette, Trophy];
@@ -33,6 +37,8 @@ const featureKeys = [
   { title: "home.feat3.title", desc: "home.feat3.desc" },
   { title: "home.feat4.title", desc: "home.feat4.desc" },
 ];
+
+const featureimages = [Support, Science, Art, Sports];
 
 const stats = [
   { value: 20,   suffix: "+",  label: "home.stat1.label" },
@@ -132,6 +138,24 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [emblaApi]);
   // END OF ADDED CODE
+
+  const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+const fadeLeft = {
+  hidden: { opacity: 0, x: -30 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+const fadeRight = {
+  hidden: { opacity: 0, x: 30 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
 
   return (
     <>
@@ -375,116 +399,119 @@ const Index = () => {
         </div>
         
         {/* Desktop: Grid layout - unchanged */}
-        <div className="hidden md:grid relative z-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featureKeys.map((k, i) => {
-            const Icon = featureIcons[i];
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.05 }}
-                transition={{ delay: i * 0.12, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                className="group relative h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/90 shadow-soft hover:shadow-warm hover:border-gold/40 transition-all duration-300"
-              >
-                <div className="h-2 w-full bg-gradient-festive" />
-                {/* animated dot pattern bg */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ backgroundImage: "radial-gradient(hsl(22 88% 52% / 0.06) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-                {/* radial glow */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_90%_10%,hsl(43_88%_55%/0.14),transparent_48%)]" />
-                {/* shimmer */}
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
-                <div className="relative z-10 flex h-full flex-col p-7">
-                  <div className="flex items-start justify-between gap-4">
-                    <motion.div
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
-                      className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-saffron text-primary-foreground shadow-gold group-hover:shadow-warm transition-shadow duration-300"
-                    >
-                      <Icon className="h-7 w-7 drop-shadow-[0_1px_0_hsl(0_0%_100%/0.25)]" />
-                    </motion.div>
-                    <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-primary">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <h3 className="mt-5 font-display text-xl md:text-[1.65rem] text-secondary leading-tight">
-                    {t(k.title)}
-                  </h3>
-                  <p className="mt-3 text-sm md:text-[0.98rem] leading-relaxed text-muted-foreground">
-                    {t(k.desc)}
-                  </p>
-                  <div className="mt-auto pt-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">
-                    <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                    <span>{t("home.features.schoolLife")}</span>
-                    <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+        <motion.div
+  variants={containerVariants}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true, amount: 0.05 }}
+  className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-5"
+>
+  {featureKeys.map((k, i) => {
+    const Icon = featureIcons[i];
+
+    return (
+      <motion.div
+        key={i}
+        variants={itemVariants}
+        whileHover={{ y: -6, transition: { duration: 0.2 } }}
+        className=" group relative overflow-hidden rounded-2xl bg-card border border-gold/25 shadow-soft hover:shadow-warm transition-shadow duration-300"
+      >
+        {/* Image Top */}
+        <div className="relative h-44 overflow-hidden">
+          <img
+            src={featureimages[i]}
+            alt={t(k.title)}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+          <div className="absolute bottom-3 left-4">
+            <span className="text-xs font-bold text-white/90 font-display tracking-wider bg-black/30 px-2 py-0.5 rounded">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+          </div>
         </div>
 
+        {/* Content */}
+        <div className="p-5">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-saffron text-white shadow-md group-hover:shadow-gold group-hover:scale-110 transition-all duration-300">
+              <Icon className="h-5 w-5" />
+            </div>
+
+            <h3 className="font-display text-lg font-semibold text-secondary leading-tight tracking-tight pt-0.5">
+              {t(k.title)}
+            </h3>
+          </div>
+
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t(k.desc)}
+          </p>
+        </div>
+
+        {/* Bottom Accent */}
+        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-festive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+      </motion.div>
+    );
+  })}
+</motion.div>
+
         {/* Mobile: Auto-scrolling Carousel - NEW ADDITION */}
-      <div className="md:hidden relative w-full overflow-hidden">
-  <div className="overflow-hidden w-full" ref={emblaRef}>
-    <div className="flex">
-      {featureKeys.map((k, i) => {
-        const Icon = featureIcons[i];
+      <div className="md:hidden relative overflow-hidden" ref={emblaRef}>
+  <div className="flex">
+    {featureKeys.map((k, i) => {
+      const Icon = featureIcons[i];
 
-        return (
-          <div
-            key={i}
-            className="basis-[85%] shrink-0 px-2"
+      return (
+        <div
+          key={i}
+          className="basis-[95%] shrink-0 px-2"
+        >
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            className="group relative h-full overflow-hidden rounded-2xl bg-card border border-gold/25 shadow-soft hover:shadow-warm transition-shadow duration-300"
           >
-            <div className="group relative w-full h-full overflow-hidden rounded-3xl border border-gold/20 bg-card/90 shadow-soft transition-all duration-300">
-              
-              {/* Top Gradient */}
-              <div className="h-2 w-full bg-gradient-festive" />
+            {/* Image Top */}
+            <div className="relative h-44 overflow-hidden">
+              <img
+                src={featureimages[i]}
+                alt={t(k.title)}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
 
-              {/* Content */}
-              <div className="relative z-10 flex h-full flex-col p-4">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-                {/* Header */}
-                <div className="flex items-start justify-between gap-3">
-                  
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-saffron text-primary-foreground shadow-gold">
-                    <Icon className="h-5 w-5" />
-                  </div>
-
-                  <span className="shrink-0 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] text-primary">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="mt-5 text-lg leading-snug font-display text-secondary break-words">
-                  {t(k.title)}
-                </h3>
-
-                {/* Description */}
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground break-words whitespace-normal max-w-full overflow-hidden">
-                  {t(k.desc)}
-                </p>
-
-                {/* Footer */}
-                <div className="mt-auto pt-5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary/80">
-                  <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
-                  <span className="whitespace-nowrap">
-                    {t("home.features.schoolLife")}
-                  </span>
-
-                  <span className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                </div>
-
+              <div className="absolute bottom-3 left-4">
+                <span className="text-xs font-bold text-white/90 font-display tracking-wider bg-black/30 px-2 py-0.5 rounded">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+
+            {/* Content */}
+            <div className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-saffron text-white shadow-md group-hover:shadow-gold group-hover:scale-110 transition-all duration-300">
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                <h3 className="font-display text-lg font-semibold text-secondary leading-tight tracking-tight pt-0.5">
+                  {t(k.title)}
+                </h3>
+              </div>
+
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {t(k.desc)}
+              </p>
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-festive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+          </motion.div>
+        </div>
+      );
+    })}
   </div>
 
 
@@ -546,7 +573,7 @@ const Index = () => {
           </div>
 
           {/* Row 2 — scrolls right (reverse) */}
-          <div
+          {/* <div
             className="relative flex overflow-hidden"
             style={{ maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)" }}
           >
@@ -572,6 +599,7 @@ const Index = () => {
               ))}
             </div>
           </div>
+        </div> */}
         </div>
       </section>
 
@@ -819,7 +847,7 @@ const Index = () => {
               className="font-display text-2xl md:text-5xl font-bold  mb-3 md:mb-4 text-secondary"
             >
               {t("home.cta.title")}
-              
+
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

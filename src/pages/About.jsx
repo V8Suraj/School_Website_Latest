@@ -415,7 +415,7 @@ const [emblaRef, emblaApi] = useEmblaCarousel({
                 className="group relative overflow-hidden rounded-2xl bg-card border border-gold/25 shadow-soft hover:shadow-warm transition-shadow duration-300"
               >
                 {/* image top */}
-                <div className="relative h-36 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img src={facility.image} alt={facility.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   <div className="absolute bottom-3 left-4">
@@ -583,12 +583,15 @@ const [emblaRef, emblaApi] = useEmblaCarousel({
       {/* ── Leadership Team / Faculty ── */}
       <section className="container-narrow py-20 relative overflow-hidden">
         <SectionHeader eyebrow={t("about.team.eyebrow")} title={t("about.team.title")} subtitle={t("about.team.subtitle")} />
+     
+      {/*Dekstop Facultiy grid  */}
+      
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.05 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10"
+          className=" hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10"
         >
           {faculty.map((member, i) => {
             const avatarGradients = [
@@ -668,6 +671,128 @@ const [emblaRef, emblaApi] = useEmblaCarousel({
             );
           })}
         </motion.div>
+
+{/* Mobile view {Faculty Member} */}
+
+        <div className="md:hidden relative w-full overflow-hidden mt-10">
+  <div className="overflow-hidden w-full" ref={emblaRef}>
+    <div className="flex">
+      {faculty.map((member, i) => {
+        const avatarGradients = [
+          "from-orange-500 to-red-500",
+          "from-amber-500 to-orange-500",
+          "from-yellow-500 to-amber-500",
+          "from-orange-600 to-amber-600",
+          "from-red-500 to-orange-500",
+          "from-amber-600 to-yellow-500",
+        ];
+
+        const grad = avatarGradients[i % avatarGradients.length];
+
+        return (
+          <div
+            key={member.name + i}
+            className="basis-[95%] shrink-0 px-2"
+          >
+            <motion.div
+              whileHover={{
+                y: -10,
+                transition: { duration: 0.2 },
+              }}
+              className="group relative h-full overflow-hidden rounded-3xl bg-card border border-gold/20 shadow-soft hover:shadow-warm transition-shadow duration-300 flex flex-col"
+            >
+              {/* Photo / Avatar */}
+              <div
+                className={`relative h-44 overflow-hidden bg-gradient-to-br ${grad} flex-shrink-0`}
+              >
+                {member.photo ? (
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/20 ring-4 ring-white/30 font-display text-4xl font-bold text-white shadow-lg">
+                      {getInitials(member.name)}
+                    </div>
+                  </div>
+                )}
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                {/* Role Badge */}
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 px-3 py-1 text-[11px] font-bold text-white uppercase tracking-wide">
+                    <Briefcase className="h-3 w-3" />
+                    {member.role}
+                  </span>
+
+                  <span className="flex h-3 w-3 items-center justify-center">
+                    <span className="absolute h-3 w-3 rounded-full bg-green-400 animate-ping opacity-75" />
+                    <span className="relative h-2 w-2 rounded-full bg-green-400" />
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col flex-1 p-5">
+                <h4 className="font-display text-xl text-secondary leading-tight">
+                  {member.name}
+                </h4>
+
+                <div className="flex items-center gap-2 mt-2">
+                  <GraduationCap className="h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm font-medium text-primary">
+                    {member.subject}
+                  </span>
+                </div>
+
+                <div className="my-3 h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <span className="text-sm text-muted-foreground">
+                    {member.experience} of experience
+                  </span>
+                </div>
+              </div>
+
+              {/* Bottom Accent */}
+              <div
+                className={`h-1 bg-gradient-to-r ${grad} scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}
+              />
+            </motion.div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+   {/* Dots indicator for mobile carousel */}
+          <div className="flex justify-center gap-2 mt-6">
+            {faculty.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  selectedIndex === idx ? "w-6 bg-primary" : "bg-primary/30"
+                }`}
+                onClick={() => emblaApi?.scrollTo(idx)}
+              />
+            ))}
+          </div>
+          </div>
+          
+        
+
+
+
+
+
         <MandalaBg className="absolute left-0 bottom-10 w-80 h-80 opacity-5 pointer-events-none" />
       </section>
     </>

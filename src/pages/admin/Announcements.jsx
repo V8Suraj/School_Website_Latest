@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
 import { Pencil, Trash2, X, Megaphone, Save, Plus, Search, Calendar, Paperclip, ExternalLink, Upload, Languages, Loader2 } from "lucide-react";
 import { translateFields } from "@/lib/translate";
+import {
+  Select,SelectContent, SelectItem, SelectTrigger,SelectValue } from "@/components/ui/select";
 
 const CATS = ["General", "Exam", "Event", "Holiday", "Urgent"];
 
@@ -87,7 +89,9 @@ const AdminAnnouncements = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search announcements…" className="pl-9 border-gold/25 focus:border-primary/50" />
         </div>
-        <div className="flex gap-1.5 flex-wrap">
+
+        {/* Dekstop filter code */}
+        <div className="md:flex gap-1.5 flex-wrap hidden">
           {["All", ...CATS].map(c => (
             <button key={c} onClick={() => setFilterCat(c)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${filterCat === c ? "bg-primary text-white border-primary" : "border-gold/30 text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}>
@@ -95,10 +99,37 @@ const AdminAnnouncements = () => {
             </button>
           ))}
         </div>
-        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0">
+        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 shrink-0 md:flex hidden">
           <Plus className="h-4 w-4" /> New
         </Button>
-      </div>
+
+ {/* mobile dropdown filter */}
+    <div className="md:hidden w-full flex justify-between items-center gap-2">
+  <Select value={filterCat} onValueChange={setFilterCat}>
+    <SelectTrigger className="w-1/2">
+      <SelectValue placeholder="Select category" />
+    </SelectTrigger>
+
+    <SelectContent className="w-full">
+      {["All", ...CATS].map((c) => (
+        <SelectItem key={c} value={c}  className="relative flex  cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+          {c}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+
+    <Button onClick={openAdd} variant="hero" size="sm" className=" gap-1.5 shrink-0">
+          <Plus className="h-4 w-4" /> Add Announcement
+        </Button>
+
+</div>
+</div>
+
+
+      
+
+     
 
       {/* ── Card list ── */}
       <div className="space-y-3">

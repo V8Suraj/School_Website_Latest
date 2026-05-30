@@ -7,6 +7,7 @@ import {
   Images, Upload, Trash2, Plus, X, Pencil,
   Search, Eye, ImageOff, Save, Link2,
 } from "lucide-react";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
 
 // ─── assets (Vite static imports) ─────────────────────────────────────────────
 import heroHome      from "@/assets/hero-home.jpg";
@@ -16,6 +17,7 @@ import heroCalendar  from "@/assets/calenderpage.png";
 import heroContact   from "@/assets/conatctus.png";
 import heroAbout     from "@/assets/aboutus.png";
 import schoolHome    from "@/assets/schoolhome.png";
+
 
 // ─── types ─────────────────────────────────────────────────────────────────────
 
@@ -105,9 +107,7 @@ const AdminGallery = () => {
             {images.length} images · {visible.length} shown
           </p>
         </div>
-        <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 w-fit">
-          <Plus className="h-4 w-4" /> Add Image
-        </Button>
+       
       </div>
 
       {/* ── Toolbar ── */}
@@ -116,7 +116,9 @@ const AdminGallery = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search images…" className="pl-9 border-gold/25 focus:border-primary/50" />
         </div>
-        <div className="flex gap-1.5 flex-wrap">
+
+        {/* Dekstop filter */}
+        <div className=" hidden md:flex gap-1.5 flex-wrap">
           {(["All", ...CATS]).map(c => (
             <button key={c} onClick={() => setFilter(c)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
@@ -124,7 +126,34 @@ const AdminGallery = () => {
               }`}
             >{c}</button>
           ))}
+           <Button onClick={openAdd} variant="hero" size="sm" className="gap-1.5 w-fit">
+          <Plus className="h-4 w-4" /> Add Image
+        </Button>
         </div>
+
+
+ {/* mobile dropdown filter */}
+    <div className="md:hidden w-full flex justify-between items-center gap-2">
+  <Select value={filter} onValueChange={setFilter}>
+    <SelectTrigger className="w-1/2">
+      <SelectValue placeholder="Select category" />
+    </SelectTrigger>
+
+    <SelectContent className="w-full">
+      {["All", ...CATS].map((c) => (
+        <SelectItem key={c} value={c}  className="relative flex  cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+          {c}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+
+    <Button onClick={openAdd} variant="hero" size="sm" className=" gap-1.5 shrink-0">
+          <Plus className="h-4 w-4" /> Add Image
+        </Button>
+
+        
+      </div>
       </div>
 
       {/* ── Grid ── */}

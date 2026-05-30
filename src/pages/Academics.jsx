@@ -11,6 +11,7 @@ import {
   CheckCircle2, GraduationCap, Star, Users, ArrowRight, Sparkles, Trophy, Lightbulb, Atom, Brain,
 } from "lucide-react";
 import heroAcademics from "@/assets/acdemics.png";
+import useEmblaCarousel from "embla-carousel-react"; //added for mobile carousel
 
 /* ─── Static colour/icon config (language-independent) ─── */
 
@@ -121,6 +122,9 @@ const AnimatedNumber = ({ value }) => {
     }
   }, [isInView, value, hasAnimated]);
 
+
+
+
   return (
     <span ref={ref} className="transition-all duration-700">
       {displayValue.toLocaleString()}
@@ -177,6 +181,50 @@ const Academics = () => {
       "academics.subj5Desc", "academics.subj6Desc", "academics.subj7Desc", "academics.subj8Desc",
     ][i]),
   }));
+
+
+
+  // code for mobile carousel using embla
+
+const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    align: "start",
+    loop: true,
+    skipSnaps: false,
+  });
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+    
+    emblaApi.on("select", onSelect);
+    onSelect();
+    
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // ADDED: Auto-scroll effect for mobile carousel
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const interval = setInterval(() => {
+      if (!emblaApi.canScrollNext()) {
+        emblaApi.scrollTo(0);
+      } else {
+        emblaApi.scrollNext();
+      }
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+
+
 
   return (
     <>
@@ -364,7 +412,7 @@ const Academics = () => {
           />
 
           {/* Tab selector */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className=" hidden md:flex flex-wrap justify-center gap-2 mb-10 ">
             {programs.map((p, i) => (
               <button
                 key={i}
@@ -488,8 +536,8 @@ const Academics = () => {
             </p>
           </motion.div>
 
-          {/* Cards */}
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/*Dekstop  Cards */}
+          <div className=" hidden md:grid gap-5 sm:grid-cols-2 lg:grid-cols-4 ">
             {subjects.map((s, i) => {
               // Function to split any title into 2 lines
               const splitTitle = (title) => {
@@ -509,7 +557,7 @@ const Academics = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="group relative overflow-hidden rounded-3xl bg-white border border-gold/25 shadow-[0_4px_20px_hsl(43_78%_52%/0.08)] hover:shadow-[0_10px_36px_hsl(43_78%_52%/0.18)] hover:-translate-y-2 transition-all duration-300 cursor-default flex flex-col h-full"
+                  className="group relative  overflow-hidden rounded-3xl bg-white border border-gold/25 shadow-[0_4px_20px_hsl(43_78%_52%/0.08)] hover:shadow-[0_10px_36px_hsl(43_78%_52%/0.18)] hover:-translate-y-2 transition-all duration-300 cursor-default flex flex-col h-full"
                 >
                   {/* Coloured top bar */}
                   <div className={`h-1 w-full bg-gradient-to-r ${s.color}`} />
@@ -560,9 +608,107 @@ const Academics = () => {
                   {/* Bottom accent bar — always on mobile, slides in on desktop hover */}
                   <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${s.color} scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
                 </motion.div>
+
+
               );
             })}
           </div>
+
+{/* mobile carousel */}
+
+<div className="md:hidden relative w-full overflow-hidden">
+  <div className="overflow-hidden w-full" ref={emblaRef}>
+    <div className="flex">
+      {subjects.map((s, i) => {
+        const splitTitle = (title) => {
+          const words = title.split(" ");
+          const midPoint = Math.ceil(words.length / 2);
+          const firstLine = words.slice(0, midPoint).join(" ");
+          const secondLine = words.slice(midPoint).join(" ");
+          return { firstLine, secondLine };
+        };
+
+        const { firstLine, secondLine } = splitTitle(s.name);
+
+        return (
+          <div
+            key={i}
+            className="basis-[85%] shrink-0 px-2"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.07,
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="group relative overflow-hidden rounded-3xl bg-white border border-gold/25 shadow-[0_4px_20px_hsl(43_78%_52%/0.08)] hover:shadow-[0_10px_36px_hsl(43_78%_52%/0.18)] hover:-translate-y-2 transition-all duration-300 cursor-default flex flex-col h-full"
+            >
+              {/* Coloured top bar */}
+              <div className={`h-1 w-full bg-gradient-to-r ${s.color}`} />
+
+              {/* Hover tint */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${s.color} opacity-[0.06] md:opacity-0 md:group-hover:opacity-[0.06] transition-opacity duration-300 pointer-events-none`}
+              />
+
+              <div className="relative z-10 p-6 flex flex-col flex-1">
+                {/* Icon + ritual emoji row */}
+                <div className="flex items-start justify-between mb-5">
+                  <div className="relative">
+                    <div
+                      className={`absolute inset-0 rounded-xl bg-gradient-to-br ${s.color} opacity-25 blur-md scale-110`}
+                    />
+                    <div
+                      className={`relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${s.color} text-white shadow-md group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <s.Icon className="h-6 w-6" />
+                    </div>
+                  </div>
+
+                  <span className="text-3xl leading-none mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                    {s.ritual}
+                  </span>
+                </div>
+
+                <p className="font-sanskrit text-[11px] text-primary/60 mb-1 tracking-wide min-h-[2rem]">
+                  {s.sanskritName}
+                </p>
+
+                <h4 className="font-display text-base md:text-lg text-secondary mb-2 leading-tight min-h-[3rem] md:min-h-[3.5rem]">
+                  {firstLine}
+                  <br />
+                  {secondLine}
+                </h4>
+
+                <div
+                  className={`h-0.5 w-10 bg-gradient-to-r ${s.color} mb-3 rounded-full opacity-70`}
+                />
+
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mb-4 flex-1 min-h-[4rem] md:min-h-[5rem]">
+                  {s.desc}
+                </p>
+
+                <div className="mt-auto">
+                  <span className="inline-flex items-center gap-1 font-sanskrit text-[10px] tracking-[0.12em] text-primary/70 bg-primary/8 border border-primary/15 rounded-full px-2.5 py-1">
+                    {s.ritualLabel}
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${s.color} scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 transition-transform duration-500 origin-left`}
+              />
+            </motion.div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
         </div>
       </section>
 

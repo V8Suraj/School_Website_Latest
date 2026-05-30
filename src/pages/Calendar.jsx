@@ -6,6 +6,7 @@ import { calendarEvents } from "@/data/schoolData";
 import { CalendarDays, MapPin } from "lucide-react";
 import heroCalendar from "@/assets/calenderpage.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
 
 const CATEGORY_COLORS = {
   Exam:    { badge: "bg-orange-100 text-orange-700 border-orange-200",    bar: "bg-orange-500",  dot: "bg-orange-500" },
@@ -54,7 +55,7 @@ const Calendar = () => {
         />
 
         {/* Filter pills */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="hidden md:flex flex-wrap gap-2 mb-8">
           {filters.map(({ value, key }) => (
             <button
               key={value}
@@ -69,6 +70,26 @@ const Calendar = () => {
             </button>
           ))}
         </div>
+
+        {/* Mobile Filter */}
+
+    <div className="md:hidden w-full flex justify-between items-center gap-2 mb-8">
+  <Select value={filter} onValueChange={setFilter}>
+    <SelectTrigger className="w-full">
+      <SelectValue placeholder="Select subject" />
+    </SelectTrigger>
+
+    <SelectContent className="w-full">
+      {[ ...filters].map((s) => (
+        <SelectItem key={s.value} value={s.value}  className="relative flex  cursor-pointer select-none items-center rounded-sm px-3 py-2 pl-8 text-sm outline-none data-[highlighted]:bg-gradient-to-r data-[highlighted]:from-orange-500 data-[highlighted]:to-amber-500 data-[highlighted]:text-white">
+          {t(s.key)}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+
+</div>
+
 
         {/* Events grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
