@@ -10,25 +10,25 @@ import {
 } from "lucide-react";
 
 const seed = [
-  { id: 1, studentName: "Arjun Mehta",  grade: "Class VI",  parentName: "Suresh Mehta",  email: "suresh@example.com",  phone: "9876543210", date: "2026-01-12", status: "Pending" },
-  { id: 2, studentName: "Priya Singh",  grade: "Class IX",  parentName: "Kavita Singh",  email: "kavita@example.com",  phone: "9123456789", date: "2026-01-10", status: "Reviewed" },
-  { id: 3, studentName: "Rohan Patel",  grade: "Class I",   parentName: "Amit Patel",    email: "amit@example.com",    phone: "9988776655", date: "2026-01-08", status: "Accepted" },
-  { id: 4, studentName: "Sneha Sharma", grade: "Class XI",  parentName: "Rajesh Sharma", email: "rajesh@example.com",  phone: "9871234560", date: "2026-01-06", status: "Rejected" },
-  { id: 5, studentName: "Karan Gupta",  grade: "Class III", parentName: "Neha Gupta",    email: "neha@example.com",    phone: "9765432100", date: "2026-01-05", status: "Pending" },
+  { id: 1, studentName: "Arjun Mehta", grade: "Class VI", parentName: "Suresh Mehta", email: "suresh@example.com", phone: "9876543210", date: "2026-01-12", status: "Pending" },
+  { id: 2, studentName: "Priya Singh", grade: "Class IX", parentName: "Kavita Singh", email: "kavita@example.com", phone: "9123456789", date: "2026-01-10", status: "Reviewed" },
+  { id: 3, studentName: "Rohan Patel", grade: "Class I", parentName: "Amit Patel", email: "amit@example.com", phone: "9988776655", date: "2026-01-08", status: "Accepted" },
+  { id: 4, studentName: "Sneha Sharma", grade: "Class XI", parentName: "Rajesh Sharma", email: "rajesh@example.com", phone: "9871234560", date: "2026-01-06", status: "Rejected" },
+  { id: 5, studentName: "Karan Gupta", grade: "Class III", parentName: "Neha Gupta", email: "neha@example.com", phone: "9765432100", date: "2026-01-05", status: "Pending" },
 ];
 
 const STATUS_CONFIG = {
-  Pending:  { bg: "bg-amber-50",  text: "text-amber-700",  icon: Clock,         dot: "bg-amber-400" },
-  Reviewed: { bg: "bg-blue-50",   text: "text-blue-700",   icon: FileSearch,    dot: "bg-blue-400" },
-  Accepted: { bg: "bg-green-50",  text: "text-green-700",  icon: CheckCircle2,  dot: "bg-green-500" },
-  Rejected: { bg: "bg-red-50",    text: "text-red-700",    icon: XCircle,       dot: "bg-red-400" },
+  Pending: { bg: "bg-amber-50", text: "text-amber-700", icon: Clock, dot: "bg-amber-400" },
+  Reviewed: { bg: "bg-blue-50", text: "text-blue-700", icon: FileSearch, dot: "bg-blue-400" },
+  Accepted: { bg: "bg-green-50", text: "text-green-700", icon: CheckCircle2, dot: "bg-green-500" },
+  Rejected: { bg: "bg-red-50", text: "text-red-700", icon: XCircle, dot: "bg-red-400" },
 };
 
 const STAT_CARDS = [
-  { status: "Pending", label: "Pending",  color: "from-amber-400 to-orange-500",  icon: Clock },
-  { status: "Reviewed", label: "Reviewed", color: "from-blue-500 to-indigo-500",   icon: FileSearch },
-  { status: "Accepted", label: "Accepted", color: "from-emerald-500 to-teal-500",  icon: CheckCircle2 },
-  { status: "Rejected", label: "Rejected", color: "from-rose-500 to-red-500",      icon: XCircle },
+  { status: "Pending", label: "Pending", color: "from-amber-400 to-orange-500", icon: Clock },
+  { status: "Reviewed", label: "Reviewed", color: "from-blue-500 to-indigo-500", icon: FileSearch },
+  { status: "Accepted", label: "Accepted", color: "from-emerald-500 to-teal-500", icon: CheckCircle2 },
+  { status: "Rejected", label: "Rejected", color: "from-rose-500 to-red-500", icon: XCircle },
 ];
 
 const AdminAdmissions = () => {
@@ -64,11 +64,10 @@ const AdminAdmissions = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
               onClick={() => setFilterStatus(filterStatus === s.status ? "All" : s.status)}
-              className={`relative overflow-hidden rounded-2xl border text-left p-5 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-warm ${
-                filterStatus === s.status
+              className={`relative overflow-hidden rounded-2xl border text-left p-5 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-warm ${filterStatus === s.status
                   ? "border-primary/40 bg-primary/5"
                   : "border-gold/20 bg-card"
-              }`}
+                }`}
             >
               <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${s.color}`} />
               <div className={`inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br ${s.color} text-white shadow-md mb-3`}>

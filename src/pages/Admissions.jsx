@@ -14,11 +14,11 @@ import HolisticDev from "../assets/HolisticDev.webp";
 import ExpertFaculty from "../assets/ExpertFaculty.jpg";
 import RichCurriculum from "../assets/Rich Curriculum.jpg";
 import ProvenExcellence from "../assets/Proven Excellence.webp";
-import { 
-  Clock, 
-  MessageCircle, 
-  GraduationCap, 
-  Building, 
+import {
+  Clock,
+  MessageCircle,
+  GraduationCap,
+  Building,
 } from "lucide-react";
 import {
   Heart, Users, BookOpen, Trophy,
@@ -61,14 +61,14 @@ const stepsMeta = [
 ];
 
 const whyMeta = [
-  { icon: Heart,    image: HolisticDev , stat: "100%", color: "from-primary to-orange-400" },
-  { icon: Users,    image: ExpertFaculty , stat: "40+",  color: "from-amber-500 to-orange-500" },
+  { icon: Heart, image: HolisticDev, stat: "100%", color: "from-primary to-orange-400" },
+  { icon: Users, image: ExpertFaculty, stat: "40+", color: "from-amber-500 to-orange-500" },
   { icon: BookOpen, image: RichCurriculum, stat: "CBSE", color: "from-amber-600 to-primary" },
-  { icon: Trophy,   image: ProvenExcellence, stat: "98%",  color: "from-gold to-amber-500" },
+  { icon: Trophy, image: ProvenExcellence, stat: "98%", color: "from-gold to-amber-500" },
 ];
 
-const docKeys = ["doc1","doc2","doc3","doc4","doc5","doc6"];
-const faqCount = [1,2,3,4,5,6,7];
+const docKeys = ["doc1", "doc2", "doc3", "doc4", "doc5", "doc6"];
+const faqCount = [1, 2, 3, 4, 5, 6, 7];
 
 /* ─── FAQ Item ──────────────────────────────────────────── */
 const faqIcons = ["🎓", "📝", "📋", "💰", "👥", "📅", "🚌"];
@@ -85,17 +85,15 @@ const FaqItem = ({ question, answer, index }) => {
       className="group"
     >
       <div
-        className={`relative overflow-hidden rounded-2xl border transition-all duration-400 ${
-          open
+        className={`relative overflow-hidden rounded-2xl border transition-all duration-400 ${open
             ? "border-primary/40 bg-white shadow-[0_8px_32px_hsl(22_88%_52%/0.12)]"
             : "border-gold/20 bg-white/80 hover:border-gold/40 hover:bg-white shadow-[0_2px_12px_hsl(43_78%_52%/0.07)] hover:shadow-[0_4px_20px_hsl(43_78%_52%/0.13)]"
-        }`}
+          }`}
       >
         {/* Left accent bar — only visible when open */}
         <div
-          className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-gold to-amber-400 transition-all duration-400 rounded-l-2xl ${
-            open ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-gold to-amber-400 transition-all duration-400 rounded-l-2xl ${open ? "opacity-100" : "opacity-0"
+            }`}
         />
 
         {/* Question row */}
@@ -105,11 +103,10 @@ const FaqItem = ({ question, answer, index }) => {
           className="w-full flex items-center gap-4 px-5 py-5 md:px-6 text-left"
         >
           {/* Number + emoji badge */}
-          <div className={`shrink-0 flex flex-col items-center justify-center h-11 w-11 rounded-xl border transition-all duration-300 ${
-            open
+          <div className={`shrink-0 flex flex-col items-center justify-center h-11 w-11 rounded-xl border transition-all duration-300 ${open
               ? "bg-gradient-to-br from-primary to-orange-400 border-transparent text-white shadow-[0_4px_12px_hsl(22_88%_52%/0.35)]"
               : "bg-gold/8 border-gold/25 text-primary group-hover:border-gold/50"
-          }`}>
+            }`}>
             <span className="text-base leading-none">{faqIcons[index]}</span>
             <span className={`text-[9px] font-bold tracking-wider mt-0.5 ${open ? "text-white/80" : "text-primary/60"}`}>
               {String(index + 1).padStart(2, "0")}
@@ -117,9 +114,8 @@ const FaqItem = ({ question, answer, index }) => {
           </div>
 
           {/* Question text */}
-          <span className={`flex-1 font-display text-sm md:text-base lg:text-lg leading-snug transition-colors duration-200 ${
-            open ? "text-primary" : "text-secondary group-hover:text-primary/80"
-          }`}>
+          <span className={`flex-1 font-display text-sm md:text-base lg:text-lg leading-snug transition-colors duration-200 ${open ? "text-primary" : "text-secondary group-hover:text-primary/80"
+            }`}>
             {question}
           </span>
 
@@ -127,11 +123,10 @@ const FaqItem = ({ question, answer, index }) => {
           <motion.div
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className={`shrink-0 h-7 w-7 rounded-full flex items-center justify-center border transition-all duration-300 ${
-              open
+            className={`shrink-0 h-7 w-7 rounded-full flex items-center justify-center border transition-all duration-300 ${open
                 ? "bg-primary/10 border-primary/30 text-primary"
                 : "border-gold/25 text-muted-foreground group-hover:border-gold/50"
-            }`}
+              }`}
           >
             <ChevronDown className="h-3.5 w-3.5" />
           </motion.div>
@@ -331,7 +326,7 @@ const Admissions = () => {
                     className="font-display text-xl mb-2 leading-snug transition-colors duration-300 group-hover:text-primary"
                     style={{ color: "hsl(var(--secondary))" }}
                   >
-                    {t(["admissions.step1Title","admissions.step2Title","admissions.step3Title","admissions.step4Title"][i])}
+                    {t(["admissions.step1Title", "admissions.step2Title", "admissions.step3Title", "admissions.step4Title"][i])}
                   </h3>
 
                   {/* Divider — expands on hover */}
@@ -342,7 +337,7 @@ const Admissions = () => {
 
                   {/* Description */}
                   <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                    {t(["admissions.step1Desc","admissions.step2Desc","admissions.step3Desc","admissions.step4Desc"][i])}
+                    {t(["admissions.step1Desc", "admissions.step2Desc", "admissions.step3Desc", "admissions.step4Desc"][i])}
                   </p>
 
                   {/* Connector arrow (not last, desktop) */}
@@ -553,7 +548,7 @@ const Admissions = () => {
                     ">
                       {/* Hover Gradient Background */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
+
                       {/* Icon */}
                       <item.icon className="relative z-10 h-5 w-5 group-hover:text-white group-hover:scale-110 transition-all duration-500" />
                     </div>
@@ -606,7 +601,7 @@ const Admissions = () => {
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-saffron text-white mt-0.5">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                     </div>
-                    <span className="text-sm text-foreground/80">{t(["admissions.doc1","admissions.doc2","admissions.doc3","admissions.doc4","admissions.doc5","admissions.doc6"][docKeys.indexOf(key)])}</span>
+                    <span className="text-sm text-foreground/80">{t(["admissions.doc1", "admissions.doc2", "admissions.doc3", "admissions.doc4", "admissions.doc5", "admissions.doc6"][docKeys.indexOf(key)])}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -723,9 +718,8 @@ const Admissions = () => {
                               value={formData.grade}
                               onChange={handleChange}
                               required
-                              className={`w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary text-foreground ${
-                                errors.grade ? "border-destructive" : validFields.grade ? "border-emerald-400" : "border-input"
-                              }`}
+                              className={`w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary text-foreground ${errors.grade ? "border-destructive" : validFields.grade ? "border-emerald-400" : "border-input"
+                                }`}
                             >
                               <option value="" disabled>Select Class (e.g. Class VI)</option>
                               <option value="Pre-K">Pre-K (Nursery)</option>
@@ -794,7 +788,7 @@ const Admissions = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(38_55%_95%)] to-white" />
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: "radial-gradient(hsl(22 88% 45%) 1.5px, transparent 1.5px)", backgroundSize: "32px 32px" }} />
-          
+
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
@@ -901,31 +895,30 @@ const Admissions = () => {
               {faqCount.map((n, i) => {
                 const isOpen = openFaq === i;
                 return (
-                  <motion.div 
+                  <motion.div
                     key={n}
-                    className={`group relative rounded-2xl border transition-all duration-500 overflow-hidden ${
-                      isOpen 
-                        ? "border-primary/30 bg-gradient-to-r from-white to-gold/5 shadow-md" 
+                    className={`group relative rounded-2xl border transition-all duration-500 overflow-hidden ${isOpen
+                        ? "border-primary/30 bg-gradient-to-r from-white to-gold/5 shadow-md"
                         : "border-gold/15 bg-white/60 hover:bg-white hover:border-gold/30"
-                    }`}
+                      }`}
                   >
                     <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-orange-400 origin-top transition-transform duration-500 ${isOpen ? "scale-y-100" : "scale-y-0"}`} />
-                    
+
                     <button onClick={() => setOpenFaq(isOpen ? null : i)} className="flex w-full items-start justify-between gap-4 px-6 py-5 md:px-8 text-left outline-none">
                       <span className={`font-display text-base md:text-lg font-bold leading-snug transition-all duration-300 ${isOpen ? "text-primary translate-x-1" : "text-secondary group-hover:translate-x-1"}`}>
-                        {t(["admissions.faq1Q","admissions.faq2Q","admissions.faq3Q","admissions.faq4Q","admissions.faq5Q","admissions.faq6Q","admissions.faq7Q"][i])}
+                        {t(["admissions.faq1Q", "admissions.faq2Q", "admissions.faq3Q", "admissions.faq4Q", "admissions.faq5Q", "admissions.faq6Q", "admissions.faq7Q"][i])}
                       </span>
                       <div className={`mt-0.5 flex items-center justify-center h-8 w-8 rounded-full shrink-0 transition-all duration-500 ${isOpen ? "bg-primary text-white" : "bg-gold/10 text-primary"}`}>
                         <ChevronDown className={`h-5 w-5 transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`} />
                       </div>
                     </button>
-                    
+
                     <AnimatePresence initial={false}>
                       {isOpen && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
                           <div className="px-6 pb-8 pt-0 md:px-8 text-sm md:text-[15px] text-muted-foreground font-medium leading-relaxed">
                             <div className="h-px w-12 bg-primary/20 mb-4" />
-                            {t(["admissions.faq1A","admissions.faq2A","admissions.faq3A","admissions.faq4A","admissions.faq5A","admissions.faq6A","admissions.faq7A"][i])}
+                            {t(["admissions.faq1A", "admissions.faq2A", "admissions.faq3A", "admissions.faq4A", "admissions.faq5A", "admissions.faq6A", "admissions.faq7A"][i])}
                           </div>
                         </motion.div>
                       )}
